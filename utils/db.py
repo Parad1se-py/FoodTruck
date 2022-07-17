@@ -6,15 +6,15 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"uid": int(user.id), "wallet": 500, "name": "None", "ingredients": {}, "active":[], "level": 0, "level_l": 0, "badges":[]}
+    post = {"_id": int(user.id), "wallet": 500, "pizzeria": "None", "ingredients": {}, "active":[], "level": 0, "level_l": 0, "badges":[]}
     collection.insert_one(post)
     return True
 
-def check_acc(user):
+def check_acc(id):
     """Check if a user is registered in the database"""
-    user = collection.find_one({"uid": user.id})
+    user = collection.find_one({"_id": id})
     return bool(user)
 
-def update_data(user, mode, amount):
+def update_data(id, mode, amount):
     """Update any data on the user"""
-    collection.update_one({"uid" : user.id}, {"$inc" : {str(mode): amount}})
+    collection.update_one({"_id" : id}, {"$inc" : {str(mode): amount}})
