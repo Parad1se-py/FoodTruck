@@ -32,7 +32,7 @@ with open('./ing_shop.json', 'r') as f:
     shop = json.load(f)
 
 
-class Account(commands.Cog):
+class Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
@@ -56,7 +56,11 @@ class Account(commands.Cog):
         for item in shop:
             shop_embed.add_field(
                 name=f"{item['pic']} {item}",
-                value=f"${item['price']}"
+                value=f"${item['price']}",
+                inline=False
             )
             
         return await ctx.respond(embed=shop_embed)
+    
+def setup(bot):
+    bot.add_cog(Shop(bot))

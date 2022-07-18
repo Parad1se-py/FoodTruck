@@ -34,7 +34,7 @@ intents = discord.Intents.all()
 # The bot
 bot = discord.Bot(intents = intents, owner_id = owner_id)
 # Load cogs
-for foldername in os.listdir('./cogs'):
+for foldername in os.listdir('cogs'):
     for filename in os.listdir(f'cogs/{foldername}'):
         if filename.endswith('.py'):
             bot.load_extension(f'cogs.{foldername}.{filename[:-3]}')
