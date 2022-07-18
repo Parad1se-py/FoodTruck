@@ -44,9 +44,9 @@ def get_all_data():
     """Get all users' data"""
     return collection.find({})
 
-def get_user_data(user):
+def get_user_data(id):
     """Get a specific user's data"""
-    return collection.find_one({"_id": user.id})
+    return collection.find_one({"_id": id})
 
 
 async def update_l(user, points):

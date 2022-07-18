@@ -33,13 +33,11 @@ with open("configuration.json", "r") as config:
 intents = discord.Intents.all()
 # The bot
 bot = discord.Bot(intents = intents, owner_id = owner_id)
-
 # Load cogs
-if __name__ == '__main__':
-	for folder in os.listdir("cogs"):
-		for filename in os.listdir(f"cogs/{folder}"):
-			if filename.endswith(".py"):
-				bot.load_extension(f"cogs.{filename[:-3]}")
+for foldername in os.listdir('./cogs'):
+    for filename in os.listdir(f'cogs/{foldername}'):
+        if filename.endswith('.py'):
+            bot.load_extension(f'cogs.{foldername}.{filename[:-3]}')
 
 @bot.event
 async def on_ready():
@@ -47,4 +45,27 @@ async def on_ready():
 	print(discord.__version__)
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=f"Cooking Food!"))
 
+@bot.slash_command()
+async def load(ctx, name):
+    if ctx.author.id != int(owner_id):
+        return
+    bot.load_extension(f'cogs.{name}')
+    await ctx.respond(f'Loaded {name}')
+
+@bot.slash_command()
+async def unloaded(ctx, name):
+    if ctx.author.id != int(owner_id):
+        return
+    bot.unload_extension(f'cogs.{name}')
+    await ctx.respond(f'Unloaded {name}')
+
+@bot.slash_command()
+async def reload(ctx, name):
+	if ctx.author.id != int(owner_id):
+		return
+	bot.unload_extension(f'cogs.{name}')
+	bot.load_extension(f'cogs.{name}')
+	await ctx.respond(f'Reloaded {name}')
+
+# Run the bot
 bot.run(token)

@@ -19,12 +19,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import json
+
 import discord
 from discord import guild_only, slash_command
 from discord.ext import commands
 from discord.commands import slash_command, Option
 
 from utils import *
+
+with open('./ing_shop.json', 'r') as f:
+    shop = json.load(f)
 
 
 class Account(commands.Cog):
@@ -37,32 +42,21 @@ class Account(commands.Cog):
         
     @guild_only()
     @slash_command(
-        name='profile',
-        usage='/profile <member>',
-        description='View your or someone else\'s profile'
+        name='shop',
+        usage='/shop',
+        description='View the ingredients shop!'
     )
-    async def profile(self, ctx, member : Option(discord.member, required=False)=None):
-        if not member:
-            member = ctx.author
-
-        if not check_acc(ctx.author.id):
-            return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
-
-        data = get_user_data(ctx.author.id)
-        badges = ' '.join(data['badges'])
-
-        profile_embed = discord.Embed(
-            title=f"{ctx.author.name}'s profile",
-            description=badges,
-            color=discord.Colour.gold()
-        )
-        profile_embed.add_field(
-            name="Cash:",
-            value=f"${data['cash']}"
-        )
-        profile_embed.add_field(
-            name="Level:",
-            value=f"{data['level']}/{data['level_l']}"
+    async def shop(self, ctx):
+        shop_embed = discord.Embed(
+            title="FoodTruck Ingredients Shop!",
+            descripton="Use `/buy [item_id] <amt>` to buy any ingredient!",
+            color=discord.Colour.teal()
         )
         
-        return await ctx.respond(embed=profile_embed)
+        for item in shop:
+            shop_embed.add_field(
+                name=f"{item['pic']} {item}",
+                value=f"${item['price']}"
+            )
+            
+        return await ctx.respond(embed=shop_embed)
