@@ -52,15 +52,15 @@ class Shop(commands.Cog):
             descripton="Use `/buy [item_id] <amt>` to buy any ingredient!",
             color=discord.Colour.teal()
         )
-        
+
         for item in shop:
             shop_embed.add_field(
                 name=f"{item['pic']} {item}",
                 value=f"${item['price']}",
                 inline=False
             )
-            
+
         return await ctx.respond(embed=shop_embed)
-    
-def setup(bot):
+
+def setup(bot:commands.Bot):
     bot.add_cog(Shop(bot))

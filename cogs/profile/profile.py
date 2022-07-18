@@ -67,5 +67,5 @@ class Account(commands.Cog):
         
         return await ctx.respond(embed=profile_embed)
 
-def setup(bot):
+def setup(bot:commands.Bot):
     bot.add_cog(Account(bot))
