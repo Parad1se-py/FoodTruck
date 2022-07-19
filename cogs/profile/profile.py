@@ -20,14 +20,13 @@
 # SOFTWARE.
 
 import discord
-from discord import guild_only, slash_command
 from discord.ext import commands
-from discord.commands import slash_command, Option
+from discord.commands import Option
 
 from utils import *
 
 
-class Account(commands.Cog):
+class Profile(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
@@ -35,20 +34,18 @@ class Account(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
-    @guild_only()
-    @slash_command(
+    @commands.slash_command(
         name='profile',
-        usage='/profile <member>',
-        description='View your or someone else\'s profile'
+        description='View another player\'s profile.',
+        usage='/profile <member>'
     )
-    async def profile(self, ctx, member : Option(discord.member, required=False)=None):
+    async def profile(self, ctx, member : Option(discord.Member, required=False)=None):
         if not member:
             member = ctx.author
-
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
-        data = get_user_data(ctx.author.id)
+        data = get_user_data(member.id)
         badges = ' '.join(data['badges'])
 
         profile_embed = discord.Embed(
@@ -67,5 +64,6 @@ class Account(commands.Cog):
         
         return await ctx.respond(embed=profile_embed)
 
+    
 def setup(bot:commands.Bot):
-    bot.add_cog(Account(bot))
+    bot.add_cog(Profile(bot))

@@ -1,2 +1,7 @@
 .vscode
 configuration.json
+cogs.profile.__pycache__
+cogs.ing_shop.__pycache__
+cogs.__pycache__
+profile.__pycache__
+data.__pycache__

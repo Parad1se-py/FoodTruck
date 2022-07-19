@@ -22,17 +22,14 @@
 import json
 
 import discord
-from discord import guild_only, slash_command
 from discord.ext import commands
-from discord.commands import slash_command, Option
+from discord.commands import Option
 
 from utils import *
-
-with open('./ing_shop.json', 'r') as f:
-    shop = json.load(f)
+from data import *
 
 
-class Shop(commands.Cog):
+class Ingredients_Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
@@ -40,11 +37,10 @@ class Shop(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
-    @guild_only()
-    @slash_command(
+    @commands.slash_command(
         name='shop',
-        usage='/shop',
-        description='View the ingredients shop!'
+        description='View the ingredients shop!',
+        usage='/shop'
     )
     async def shop(self, ctx):
         shop_embed = discord.Embed(
@@ -53,14 +49,26 @@ class Shop(commands.Cog):
             color=discord.Colour.teal()
         )
 
-        for item in shop:
+        for key, value in ing_shop:
             shop_embed.add_field(
-                name=f"{item['pic']} {item}",
-                value=f"${item['price']}",
+                name=f"{value[2]} {key}",
+                value=f"`${value[1]}` | Id : `{value[0]}`",
                 inline=False
             )
 
         return await ctx.respond(embed=shop_embed)
+    
+    @commands.slash_command(
+        name='buy',
+        description='Buy an ingredient from the shop `/shop`',
+        usage='/buy [item] <amount>'
+    )
+    async def buy(self,
+                  ctx,
+                  item: Option(str, required=True),
+                  amount: Option(int, requried=False)=1):
+        if not check_acc(ctx.author.id):
+            return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
 def setup(bot:commands.Bot):
-    bot.add_cog(Shop(bot))
+    bot.add_cog(Ingredients_Shop(bot))

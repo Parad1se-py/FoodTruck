@@ -1,3 +1,24 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2022 Parad1se-py
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import discord
 import json
 import os
@@ -12,6 +33,7 @@ with open("configuration.json", "r") as config:
 intents = discord.Intents.all()
 # The bot
 bot = discord.Bot(intents = intents, owner_id = owner_id)
+
 
 @bot.slash_command()
 async def load(ctx, name):
@@ -35,14 +57,13 @@ async def reload(ctx, name):
 	bot.load_extension(f'cogs.{name}')
 	await ctx.respond(f'Reloaded {name}')
 
+
 # Load cogs
-"""for foldername in os.listdir('./cogs'):
+for foldername in os.listdir('cogs'):
     for filename in os.listdir(f'cogs/{foldername}'):
         if filename.endswith('.py'):
-            bot.load_extension(f'cogs.{foldername}.{filename[:-3]}')"""
-            
-bot.load_extension('cogs.shop', recursive=True)
-bot.load_extension('cogs.profile', recursive=True)
+            bot.load_extension(f'cogs.{foldername}.{filename[:-3]}')
+
 
 @bot.event
 async def on_ready():
