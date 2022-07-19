@@ -45,11 +45,11 @@ class Ingredients_Shop(commands.Cog):
     async def shop(self, ctx):
         shop_embed = discord.Embed(
             title="FoodTruck Ingredients Shop!",
-            descripton="Use `/buy [item_id] <amt>` to buy any ingredient!",
+            description="Use `/buy [item_id] <amt>` to buy any ingredient!",
             color=discord.Colour.teal()
         )
 
-        for key, value in ing_shop:
+        for key, value in ing_shop.items():
             shop_embed.add_field(
                 name=f"{value[2]} {key}",
                 value=f"`${value[1]}` | Id : `{value[0]}`",

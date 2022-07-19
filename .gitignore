@@ -6,3 +6,9 @@ cogs.__pycache__
 profile.__pycache__
 data.__pycache__
 utils.__pycache__
+data/__pycache__/__init__.cpython-310.pyc
+data/__pycache__/ing_shop_list.cpython-310.pyc
+utils/__pycache__/__init__.cpython-310.pyc
+utils/__pycache__/db.cpython-310.pyc
+cogs/ing_shop/__pycache__/ing_shop.cpython-310.pyc
+cogs/profile/__pycache__/profile.cpython-310.pyc
