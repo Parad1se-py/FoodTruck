@@ -21,12 +21,11 @@
 
 import discord
 from discord.ext import commands
-from discord.commands import Option
 
 from utils import *
 
 
-class Profile(commands.Cog):
+class ErrorHandler(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
@@ -34,38 +33,17 @@ class Profile(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
-    @commands.slash_command(
-        name='profile',
-        description='View another player\'s profile.',
-        usage='/profile <member>'
-    )
-    async def profile(self,
-                      ctx: discord.ApplicationContext,
-                      member : Option(discord.Member, required=False)=None):
-        if not member:
-            member = ctx.author
-        if not check_acc(member.id):
-            return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
+    @commands.Cog.listener()
+    async def on_application_command_error(self, ctx: discord.ApplicationContext, error: discord.DiscordException):
+        if isinstance(error, commands.CommandOnCooldown):
+            time_list = seconds_to_dhms(error.retry_after)
+            embed = discord.Embed(
+                title='Command on cooldown!',
+                description=f'This command is on cooldown for {time_list[1]} hours, {time_list[2]} minutes and {time_list[3]} seconds.',
+                color=discord.Colour.brand_red()
+            )
+            return await ctx.respond(embed=embed)
+        raise error
 
-        data = get_user_data(member.id)
-        badges = ' '.join(data['badges'])
-
-        profile_embed = discord.Embed(
-            title=f"{ctx.author.name}'s profile",
-            description=badges,
-            color=discord.Colour.gold()
-        )
-        profile_embed.add_field(
-            name="Cash:",
-            value=f"${data['cash']}"
-        )
-        profile_embed.add_field(
-            name="Level:",
-            value=f"{data['level']}/{data['level_l']}"
-        )
-        
-        return await ctx.respond(embed=profile_embed)
-
-    
 def setup(bot:commands.Bot):
-    bot.add_cog(Profile(bot))
+    bot.add_cog(ErrorHandler(bot))

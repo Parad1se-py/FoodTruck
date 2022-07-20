@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import random
+
 import discord
 from discord.ext import commands
 from discord.commands import Option
@@ -26,46 +28,35 @@ from discord.commands import Option
 from utils import *
 
 
-class Profile(commands.Cog):
+class Daily(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
-        
+
     @commands.slash_command(
-        name='profile',
-        description='View another player\'s profile.',
-        usage='/profile <member>'
+        name='daily',
+        description='Reedem your daily cash and free ingredients!',
+        usage='/daily'
     )
-    async def profile(self,
-                      ctx: discord.ApplicationContext,
-                      member : Option(discord.Member, required=False)=None):
-        if not member:
-            member = ctx.author
-        if not check_acc(member.id):
+    @commands.cooldown(86400, 1, commands.BucketType.user)
+    async def daily(self, ctx: discord.ApplicationContext):
+        if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
+        
+        cash = random.randint(50, 550)
 
-        data = get_user_data(member.id)
-        badges = ' '.join(data['badges'])
-
-        profile_embed = discord.Embed(
-            title=f"{ctx.author.name}'s profile",
-            description=badges,
-            color=discord.Colour.gold()
-        )
-        profile_embed.add_field(
-            name="Cash:",
-            value=f"${data['cash']}"
-        )
-        profile_embed.add_field(
-            name="Level:",
-            value=f"{data['level']}/{data['level_l']}"
+        update_data(ctx.author.id, 'cash', cash)
+        
+        embed = discord.Embed(
+            title='Daily loot reedemed!',
+            description=f'You reedemed `${cash}`!',
+            color=discord.Colour.teal()
         )
         
-        return await ctx.respond(embed=profile_embed)
-
-    
+        return await ctx.respond(embed=embed)
+        
 def setup(bot:commands.Bot):
-    bot.add_cog(Profile(bot))
+    bot.add_cog(Daily(bot))

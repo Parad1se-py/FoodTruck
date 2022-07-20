@@ -20,3 +20,4 @@
 # SOFTWARE.
 
 from .db import *
+from .time_conv import *

@@ -18,9 +18,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-import json
-
 import discord
 from discord.ext import commands
 from discord.commands import Option
@@ -42,7 +39,7 @@ class Ingredients_Shop(commands.Cog):
         description='View the ingredients shop!',
         usage='/shop'
     )
-    async def shop(self, ctx):
+    async def shop(self, ctx: discord.ApplicationContext):
         shop_embed = discord.Embed(
             title="FoodTruck Ingredients Shop!",
             description="Use `/buy [item_id] <amt>` to buy any ingredient!",
@@ -64,11 +61,27 @@ class Ingredients_Shop(commands.Cog):
         usage='/buy [item] <amount>'
     )
     async def buy(self,
-                  ctx,
+                  ctx: discord.ApplicationContext,
                   item: Option(str, required=True),
                   amount: Option(int, requried=False)=1):
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
+
+        user_data = get_user_data(ctx.author.id)
+
+        for key, value in ing_shop:
+            if item in [key, value[0]]:
+                if ( amount * value[1] ) > user_data['cash']:
+                    return await ctx.respond(f"You don't have enough money (`${amount*value[1]}`) to buy {item}!")
+                add_item(ctx.author, item, amount)
+                success_embed = discord.Embed(
+                    title="Successful Purchase",
+                    description=f'You successfully bought {amount}x {value[2]}{item} for `${amount*value[1]}`!',
+                    color=discord.Colour.teal()
+                )
+                success_embed.set_footer(text='Thanks for your purchase! Happy cooking :)')
+
+                return await ctx.respond(embed=success_embed)
 
 def setup(bot:commands.Bot):
     bot.add_cog(Ingredients_Shop(bot))

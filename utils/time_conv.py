@@ -19,6 +19,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-ing_shop = {
-    'Cheese': ['cheese', 10, '<:cheese_ft:998538329333182504>', 'https://cdn.discordapp.com/attachments/945160755546849341/998538386035986432/cheese.png']
-}
+def seconds_to_dhms(time):
+    seconds_to_minute   = 60
+    seconds_to_hour     = 60 * seconds_to_minute
+    seconds_to_day      = 24 * seconds_to_hour
+
+    days    =   time // seconds_to_day
+    time    %=  seconds_to_day
+
+    hours   =   time // seconds_to_hour
+    time    %=  seconds_to_hour
+
+    minutes =   time // seconds_to_minute
+    time    %=  seconds_to_minute
+
+    seconds = time
+
+    return [days, hours, minutes, seconds]
