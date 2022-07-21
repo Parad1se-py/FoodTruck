@@ -20,7 +20,7 @@
 # SOFTWARE.
 
 
-# Item: [id, ingredients, servings, emoji, level]
+# Item: [id, ingredients, servings, emoji, level, time]
 menu = {
-    'Taco': ['taco', ('cheese', 'veg-salad', 'taco-shell'), 2, '<:taco_ft:999343822809092187>', 1]
+    'Taco': ['taco', ('cheese', 'veg-salad', 'taco-shell'), 2, '<:taco_ft:999343822809092187>', 1, 60]
 }

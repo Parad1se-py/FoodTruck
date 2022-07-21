@@ -27,7 +27,7 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":[], "level": 0, "level_l": 0, "badges":[]}
+    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 0, "level_l": 0, "badges":[]}
     collection.insert_one(post)
     return True
 
@@ -68,34 +68,81 @@ def add_item(user, item, amount=1):
         {"_id": user.id},
         {"$inc": {f"inv.{item}": int(amount)}}
     )
-    
-def check_for_item(user, item):
-    d = collection.find_one({"_id": int(user.id)})
+
+def purge_item(id, item, amount):
+    collection.update_one(
+        {"_id": id},
+        {"$unset": {f"inv.{item}": amount}}
+    )
+
+def remove_item(id, item:str, amount:int=1):
+    if item_count(id) == amount:
+        purge_item(id, item, amount)
+    else:
+        collection.update_one(
+            {"_id": id},
+            {"$unset": {f"inv.{item}": amount}}
+        )
+        
+def add_dish(user, item, amount=1):
+    collection.update_one(
+        {"_id": user.id},
+        {"$inc": {f"dishes.{item}": int(amount)}}
+    )
+
+def purge_dish(id, item, amount):
+    collection.update_one(
+        {"_id": id},
+        {"$unset": {f"dishes.{item}": amount}}
+    )
+
+def remove_dish(id, item:str, amount:int=1):
+    if item_count(id) == amount:
+        purge_dish(id, item, amount)
+    else:
+        collection.update_one(
+            {"_id": id},
+            {"$unset": {f"dishes.{item}": amount}}
+        )
+
+def check_for_item(id, item):
+    d = collection.find_one({"_id": int(id)})
     try:
         if d["inv"][item] >= 1:
             return True
     except Exception:
         return False
     
-def check_for_active(user, item):
-    d = collection.find_one({"_id": int(user.id)})
-    if len(d['active']) == 0:
-        return None
+def check_for_dish(id, item):
+    d = collection.find_one({"_id": int(id)})
     try:
-        if item.lower() in d['active']:
-                return True
+        if d["dishes"][item] >= 1:
+            return True
     except Exception:
         return False
 
-def add_active(user, item):
+def add_active(user, item, amount=1):
     collection.update_one(
         {"_id": user.id},
-        {"$push": { "active": item}}
+        {"$inc": {f"active.{item}": int(amount)}}
+    )
+
+def remove_active(id, item:str, amount:int=1):
+    collection.update_one(
+        {"_id": id},
+        {"$unset": {f"active.{item}": amount}}
     )
     
-def item_count(user, item):
-    if check := check_for_item(user, item):
-        x = collection.find_one({"_id": int(user.id)})
+def item_count(id, item):
+    if _ := check_for_item(id, item):
+        x = collection.find_one({"_id": int(id)})
+        return x['inv'][item]
+    else:
+        return 0
+    
+def dish_count(id, item):
+    if _ := check_for_dish(id, item):
+        x = collection.find_one({"_id": int(id)})
         return x['inv'][item]
     else:
         return 0

@@ -18,6 +18,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import asyncio
 
 import discord
 from discord.ext import commands
@@ -40,8 +41,39 @@ class Cook(commands.Cog):
         description='Cook any item that you have unlovked from the menu!',
         usage='/cook'
     )
-    async def cook(self, ctx: discord.ApplicationContext):
-        ...
+    async def cook(self,
+                   ctx: discord.ApplicationContext,
+                   dish: Option(str, required=True),
+                   amount: Option(int, required=False)=1):
+        if not check_acc(ctx.author.id):
+            return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
+
+        user_data = get_user_data(ctx.author.id)
         
+        for key, value in menu:
+            if key.lower() == dish.lower() or value[0].lower() == dish.lower():
+                if user_data['level'] < value[4]:
+                    return await ctx.respond(f"You don't have the required level (`{value[4]}`) to cook this dish! Your current level is `{user_data['level']}`/`{user_data['level_l']}`")
+
+                for ingredient in user_data['inv']:
+                    if not check_for_item(ctx.author, ingredient):
+                        return await ctx.respond(f"You lack the ingredient `{ingredient}`! Buy it using `/buy {ingredient}`.")
+                    item_count = item_count(ctx.author.id, ingredient)
+                    if item_count != amount:
+                        return await ctx.respond(f"You lack {amount} ingredient `{ingredient}`! You currently have `{item_count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-item_count}`.")
+
+                for ingredient in user_data['inv']:
+                    remove_item(ctx.author.id, ingredient, amount)
+
+                add_active(ctx.author, dish, amount)
+                msg = await ctx.respond(f"Your dish is being prepared! Come back in {value[5]/60:.1f} minute(s).")
+                asyncio.sleep(value[5])
+                remove_active(ctx.author.id)
+                add_dish(ctx.author, dish, amount)
+                await msg.message.edit(f"`{amount}` **{key}** have been prepared!")
+            else:
+                return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
+
+
 def setup(bot:commands.Bot):
     bot.add_cog(Cook(bot))
