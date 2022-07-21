@@ -50,7 +50,7 @@ class Cook(commands.Cog):
 
         user_data = get_user_data(ctx.author.id)
         
-        for key, value in menu:
+        for key, value in menu.items():
             if key.lower() == dish.lower() or value[0].lower() == dish.lower():
                 if user_data['level'] < value[4]:
                     return await ctx.respond(f"You don't have the required level (`{value[4]}`) to cook this dish! Your current level is `{user_data['level']}`/`{user_data['level_l']}`")

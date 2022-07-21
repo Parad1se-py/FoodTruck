@@ -69,7 +69,7 @@ class Ingredients_Shop(commands.Cog):
 
         user_data = get_user_data(ctx.author.id)
 
-        for key, value in ing_shop:
+        for key, value in ing_shop.items():
             if item in [key, value[0]]:
                 if ( amount * value[1] ) > user_data['cash']:
                     return await ctx.respond(f"You don't have enough money (`${amount*value[1]}`) to buy {item}!")
