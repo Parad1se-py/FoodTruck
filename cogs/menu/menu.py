@@ -19,44 +19,43 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import random
-
 import discord
 from discord.ext import commands
 from discord.commands import Option
 
 from utils import *
+from data import *
 
-
-class Daily(commands.Cog):
+class Menu(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
-
+        
     @commands.slash_command(
-        name='daily',
-        description='Reedem your daily cash and free ingredients!',
-        usage='/daily'
+        name='menu',
+        description='View the menu!',
+        usage='/menu'
     )
-    @commands.cooldown(1, 86400, commands.BucketType.user)
-    async def daily(self, ctx: discord.ApplicationContext):
-        if not check_acc(ctx.author.id):
-            register(ctx.author)
-        
-        cash = random.randint(50, 550)
-
-        update_data(ctx.author.id, 'cash', cash)
-        
-        embed = discord.Embed(
-            title='Daily loot reedemed!',
-            description=f'You reedemed `${cash}`!',
+    async def menu(self, ctx:discord.ApplicationContext):
+        shop_embed = discord.Embed(
+            title="FoodTruck Menu!",
+            description="Use `/cook [item_id]` to prepare any meal!",
             color=discord.Colour.teal()
         )
-        
-        return await ctx.respond(embed=embed)
+
+        for key, value in menu.items():
+            ingredients = ', '.join(value[1])
+            shop_embed.add_field(
+                name=f"{value[3]} {key} | Id: `{value[0]}`",
+                value=f"Makes `{value[2]}` | Level required: __`{value[4]}`__\n"\
+                       f"**{ingredients}**",
+                inline=False
+            )
+
+        return await ctx.respond(embed=shop_embed)
 
 def setup(bot:commands.Bot):
-    bot.add_cog(Daily(bot))
+    bot.add_cog(Menu(bot))

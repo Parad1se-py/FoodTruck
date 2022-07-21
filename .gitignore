@@ -12,3 +12,8 @@ utils/__pycache__/__init__.cpython-310.pyc
 utils/__pycache__/db.cpython-310.pyc
 cogs/ing_shop/__pycache__/ing_shop.cpython-310.pyc
 cogs/profile/__pycache__/profile.cpython-310.pyc
+cogs/claim/__pycache__/daily.cpython-310.pyc
+cogs/error/__pycache__/error_handler.cpython-310.pyc
+cogs/menu/__pycache__/menu.cpython-310.pyc
+data/__pycache__/menu_list.cpython-310.pyc
+utils/__pycache__/time_conv.cpython-310.pyc

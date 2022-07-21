@@ -39,7 +39,7 @@ class ErrorHandler(commands.Cog):
             time_list = seconds_to_dhms(error.retry_after)
             embed = discord.Embed(
                 title='Command on cooldown!',
-                description=f'This command is on cooldown for {time_list[1]} hours, {time_list[2]} minutes and {time_list[3]} seconds.',
+                description=f'This command is on cooldown for {time_list[1]:.0f}h {time_list[2]:.0f}m {time_list[3]:.2f}s.',
                 color=discord.Colour.brand_red()
             )
             return await ctx.respond(embed=embed)

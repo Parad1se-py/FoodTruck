@@ -19,5 +19,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .ing_shop_list import *
-from .menu_list import *
+import discord
+from discord.ext import commands
+from discord.commands import Option
+
+from utils import *
+from data import *
+
+
+class Cook(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} Cog has been loaded")
+        
+    @commands.slash_command(
+        name='cook',
+        description='Cook any item that you have unlovked from the menu!',
+        usage='/cook'
+    )
+    async def cook(self, ctx: discord.ApplicationContext):
+        ...
+        
+def setup(bot:commands.Bot):
+    bot.add_cog(Cook(bot))

@@ -19,5 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .ing_shop_list import *
-from .menu_list import *
+
+# Item: [id, ingredients, servings, emoji, level]
+menu = {
+    'Taco': ['taco', ('cheese', 'veg-salad', 'taco-shell'), 2, '<:taco_ft:999343822809092187>', 1]
+}

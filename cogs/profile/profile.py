@@ -65,6 +65,29 @@ class Profile(commands.Cog):
         )
         
         return await ctx.respond(embed=profile_embed)
+    
+    @commands.slash_command(
+        name='balance',
+        description='View your or another player\'s balance.',
+        usage='/balance <member>'
+    )
+    async def bal(self,
+                      ctx: discord.ApplicationContext,
+                      member : Option(discord.Member, required=False)=None):
+        if not member:
+            member = ctx.author
+        if not check_acc(member.id):
+            return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
+
+        data = get_user_data(member.id)    
+        
+        bal_embed = discord.Embed(
+            title='Total cash',
+            description='You currently have `$' + str(data['cash']) + '`.',
+            color=discord.Colour.teal()
+        )
+
+        return await ctx.respond(embed=bal_embed)
 
     
 def setup(bot:commands.Bot):
