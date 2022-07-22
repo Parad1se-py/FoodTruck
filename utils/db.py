@@ -18,10 +18,16 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import json
 
 from pymongo import MongoClient
 
-cluster = MongoClient("mongodb+srv://teamFrixionOne:GWKRO8CetoiggeAI@cluster0.mosbb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+with open("configuration.json", "r") as config: 
+	data = json.load(config)
+	username = data["mongo_username"]
+	password = data["mongo_pass"]
+
+cluster = MongoClient(f"mongodb+srv://{username}:{password}@cluster0.mosbb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = cluster["discord"]
 collection = db["foodtruck"]
 
