@@ -69,7 +69,7 @@ for foldername in os.listdir('cogs'):
 async def on_ready():
 	print(f"We have logged in as {bot.user}")
 	print(f"Discord Version: {discord.__version__}")
-	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name = "/help"))
+	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name = "Preparing dishes!"))
 
 # Run the bot
 bot.run(token)

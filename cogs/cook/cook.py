@@ -45,6 +45,7 @@ class Cook(commands.Cog):
                    ctx: discord.ApplicationContext,
                    dish: Option(str, required=True),
                    amount: Option(int, required=False)=1):
+        await ctx.defer()
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
@@ -70,7 +71,7 @@ class Cook(commands.Cog):
                 asyncio.sleep(value[5])
                 remove_active(ctx.author.id)
                 add_dish(ctx.author, dish, amount)
-                await ctx.edit(f"`{amount}`x **{key}** has been prepared!")
+                await msg.edit(f"`{amount}`x **{key}** has been prepared!")
             else:
                 return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
