@@ -49,18 +49,18 @@ class Cook(commands.Cog):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
         user_data = get_user_data(ctx.author.id)
-        
+
         for key, value in menu.items():
             if key.lower() == dish.lower() or value[0].lower() == dish.lower():
                 if user_data['level'] < value[4]:
-                    return await ctx.respond(f"You don't have the required level (`{value[4]}`) to cook this dish! Your current level is `{user_data['level']}`/`{user_data['level_l']}`")
+                    return await ctx.respond(f"You don't have the required level (`{value[4]}`) to cook this dish! Your current level is `{user_data['level_l']/10}`")
 
                 for ingredient in user_data['inv']:
-                    if not check_for_item(ctx.author, ingredient):
+                    if not check_for_item(ctx.author.id, ingredient):
                         return await ctx.respond(f"You lack the ingredient `{ingredient}`! Buy it using `/buy {ingredient}`.")
-                    item_count = item_count(ctx.author.id, ingredient)
-                    if item_count != amount:
-                        return await ctx.respond(f"You lack {amount} ingredient `{ingredient}`! You currently have `{item_count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-item_count}`.")
+                    count = item_count(ctx.author.id, ingredient)
+                    if count < amount:
+                        return await ctx.respond(f"You lack {amount}x `{ingredient}`! You currently have `{count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-count}`.")
 
                 for ingredient in user_data['inv']:
                     remove_item(ctx.author.id, ingredient, amount)
@@ -70,7 +70,7 @@ class Cook(commands.Cog):
                 asyncio.sleep(value[5])
                 remove_active(ctx.author.id)
                 add_dish(ctx.author, dish, amount)
-                await msg.message.edit(f"`{amount}` **{key}** have been prepared!")
+                await ctx.edit(f"`{amount}`x **{key}** has been prepared!")
             else:
                 return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 

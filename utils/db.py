@@ -27,7 +27,7 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 0, "level_l": 0, "badges":[]}
+    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 1, "level_l": 1, "badges":[]}
     collection.insert_one(post)
     return True
 
@@ -76,7 +76,7 @@ def purge_item(id, item, amount):
     )
 
 def remove_item(id, item:str, amount:int=1):
-    if item_count(id) == amount:
+    if item_count(id, item) == amount:
         purge_item(id, item, amount)
     else:
         collection.update_one(

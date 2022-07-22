@@ -74,14 +74,16 @@ class Ingredients_Shop(commands.Cog):
                 if ( amount * value[1] ) > user_data['cash']:
                     return await ctx.respond(f"You don't have enough money (`${amount*value[1]}`) to buy {item}!")
                 add_item(ctx.author, item, amount)
+                update_data(ctx.author.id, 'cash', -int(value[1]*amount))
                 success_embed = discord.Embed(
                     title="Successful Purchase",
-                    description=f'You successfully bought {amount}x {value[2]}{item} for `${amount*value[1]}`!',
+                    description=f'You successfully bought `{amount}`x {value[2]} {key} for `${amount*value[1]}`!',
                     color=discord.Colour.teal()
                 )
                 success_embed.set_footer(text='Thanks for your purchase! Happy cooking :)')
 
                 return await ctx.respond(embed=success_embed)
+        await ctx.respond("No such ingredient in the shop!")
 
 def setup(bot:commands.Bot):
     bot.add_cog(Ingredients_Shop(bot))
