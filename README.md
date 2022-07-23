@@ -1,4 +1,5 @@
 # FoodTruck
-FoodTruck is a unique discord bot where you can make the most popular food truck in town!
 
-Check the `Pre-Alpha` branch as all the development is occuring in that branch as of now.
+ This is the `Pre-Alpha` stage of **FoodTruck**.
+
+ FoodTruck is a unique discord bot in which you can setup your own food truck and work to make it the most popular one in town!
