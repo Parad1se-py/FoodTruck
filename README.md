@@ -1,6 +1,7 @@
 # FoodTruck
 
- This is the `Alpha` stage of **FoodTruck**.
+ This is the `Pre-Alpha` stage of **FoodTruck**.
+ `Alpha` stage in development.
 
  Check all branches of this repository for version-related code.
 
