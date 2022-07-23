@@ -62,7 +62,7 @@ async def reload(ctx, name):
 for foldername in os.listdir('cogs'):
     for filename in os.listdir(f'cogs/{foldername}'):
         if filename.endswith('.py'):
-            bot.load_extension(f'cogs.{foldername}.{filename[:-3]}')
+            bot.load_extension(f'cogs.{foldername}.{filename[:-3]}', store=False)
 
 
 @bot.event

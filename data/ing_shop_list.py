@@ -20,9 +20,12 @@
 # SOFTWARE.
 
 
+# Item: [id, cost, emoji, embed_link]
 ing_shop = {
     'Cheese': ['cheese', 10, '<:cheese_ft:998538329333182504>', 'https://cdn.discordapp.com/attachments/945160755546849341/998538386035986432/cheese.png'],
-    'Veg Salad': ['veg-salad', 15, '<:salad_ft:999341079394537542>', 'https://cdn.discordapp.com/attachments/945160755546849341/999341184889655346/salad.png'],
+    'Veg Salad': ['veg-fillings', 15, '<:veg_fillings_ft:999341079394537542>', 'https://cdn.discordapp.com/attachments/945160755546849341/999341184889655346/salad.png'],
     'Taco Shell': ['taco-shell', 5, '<:tacoshell:999343658451095752>', 'https://media.discordapp.net/attachments/945160755546849341/999343913905168394/taco-shell.jpg'],
-    'Tortilla': ['tortilla', 5, '<:tortilla:999344252410671216>', 'https://media.discordapp.net/attachments/945160755546849341/999344196370579476/tortilla.png']
+    'Tortilla': ['tortilla', 5, '<:tortilla:999344252410671216>', 'https://media.discordapp.net/attachments/945160755546849341/999344196370579476/tortilla.png'],
+    'Rice Fillings': ['rice-fillings', 10, '<:rice_fillings:1000249113243295764>', 'https://cdn.discordapp.com/attachments/897763276421759016/1000249106222026782/rice_fillings.png'],
+    
 }

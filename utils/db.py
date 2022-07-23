@@ -25,7 +25,7 @@ from pymongo import MongoClient
 with open("configuration.json", "r") as config: 
 	data = json.load(config)
 	username = data["mongo_username"]
-	password = data["mongo_pass"]
+	password = data["mongo_password"]
 
 cluster = MongoClient(f"mongodb+srv://{username}:{password}@cluster0.mosbb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = cluster["discord"]
