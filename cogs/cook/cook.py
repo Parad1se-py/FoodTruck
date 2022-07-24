@@ -19,6 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import asyncio
+import datetime
 
 import discord
 from discord.ext import commands
@@ -67,11 +68,16 @@ class Cook(commands.Cog):
                     remove_item(ctx.author.id, ingredient, amount)
 
                 add_active(ctx.author, dish, amount)
-                msg = await ctx.respond(f"Your dish is being prepared! Come back in {value[5]/60:.1f} minute(s).")
+                msg = await ctx.respond(f"Your dish is being prepared! Come back in {convert_to_unix_time(datetime.datetime.now(), seconds=value[5])}.")
                 await asyncio.sleep(value[5])
                 remove_active(ctx.author.id, dish)
                 add_dish(ctx.author, dish, amount)
-                return await msg.edit(f"`{amount}`x **{key}** has been prepared!")
+                
+                await msg.edit(f"`{amount}`x **{key}** has been prepared!")
+                try:
+                    await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
+                except Exception:
+                    return
         return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
 

@@ -63,7 +63,7 @@ class Profile(commands.Cog):
             name="Level:",
             value=f"{data['level']}/{data['level_l']}"
         )
-        
+
         return await ctx.respond(embed=profile_embed)
     
     @commands.slash_command(
