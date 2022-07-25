@@ -44,7 +44,7 @@ def check_acc(id):
 
 def update_data(id, mode, amount):
     """Update any data on the user"""
-    collection.update_one({"_id" : id}, {"$inc" : {str(mode): amount}})
+    collection.update_one({"_id" : id}, {"$inc" : {str(mode): int(amount)}})
     
 def get_all_data():
     """Get all users' data"""
@@ -68,7 +68,7 @@ async def update_l(user, points):
     elif lvll >= lvl*10:
         collection.update_one({"_id": user.id}, {"$set": {"level": lvl+1}})
         collection.update_one({"_id": user.id}, {"$set": {"level_l": 0}})
-        
+
 def add_item(user, item, amount=1):
     collection.update_one(
         {"_id": user.id},
@@ -103,7 +103,7 @@ def purge_dish(id, item, amount):
     )
 
 def remove_dish(id, item:str, amount:int=1):
-    if item_count(id) == amount:
+    if item_count(id, item) == amount:
         purge_dish(id, item, amount)
     else:
         collection.update_one(
@@ -149,6 +149,6 @@ def item_count(id, item):
 def dish_count(id, item):
     if _ := check_for_dish(id, item):
         x = collection.find_one({"_id": int(id)})
-        return x['inv'][item]
+        return x['dishes'][item]
     else:
         return 0

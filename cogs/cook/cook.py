@@ -68,18 +68,18 @@ class Cook(commands.Cog):
                     remove_item(ctx.author.id, ingredient, amount)
 
                 add_active(ctx.author, dish, amount)
-                msg = await ctx.respond(f"Your dish is being prepared! Come back in {convert_to_unix_time(datetime.datetime.now(), seconds=value[5])}.")
+                msg = await ctx.respond(f"Your dish is being prepared! Come back {convert_to_unix_time(datetime.datetime.now(), seconds=value[5])}.")
                 await asyncio.sleep(value[5])
                 remove_active(ctx.author.id, dish)
-                add_dish(ctx.author, dish, amount)
-                
+                add_dish(ctx.author, dish, amount*value[2])
+
                 await msg.edit(f"`{amount}`x **{key}** has been prepared!")
                 try:
                     await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
                 except Exception:
                     return
-        return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
-
+            else:
+                return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
 def setup(bot:commands.Bot):
     bot.add_cog(Cook(bot))

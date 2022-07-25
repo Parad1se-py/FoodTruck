@@ -6,5 +6,6 @@ cogs/claim/__pycache__
 cogs/error/__pycache__
 cogs/menu/__pycache__
 cogs/cook/__pycache__
+cogs/serve/__pycache__
 data/__pycache__
 utils/__pycache__

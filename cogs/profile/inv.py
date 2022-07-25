@@ -42,7 +42,6 @@ class Inventory(commands.Cog):
     )
     async def inventory(self, ctx: discord.ApplicationContext):
         await ctx.defer()
-        user_acc = check_acc(ctx.author.id)
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
