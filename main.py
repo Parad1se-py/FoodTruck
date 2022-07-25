@@ -22,11 +22,13 @@
 import discord
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Get configuration.json
 with open("configuration.json", "r") as config: 
 	data = json.load(config)
-	token = data["token"]
 	owner_id = data["owner_id"]
 
 # Intents
@@ -72,4 +74,4 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name = "Preparing dishes!"))
 
 # Run the bot
-bot.run(token)
+bot.run(os.getenv("TOKEN"))

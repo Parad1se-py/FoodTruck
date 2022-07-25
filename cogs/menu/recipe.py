@@ -19,8 +19,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import random
-
 import discord
 from discord.ext import commands
 from discord.commands import Option
@@ -28,64 +26,44 @@ from discord.commands import Option
 from utils import *
 from data import *
 
-
-class Serve(commands.Cog):
+class Recipe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
     @commands.slash_command(
-        name='serve',
-        description='Serve cooked food to your customers!',
-        usage='/serve [item] <amount>'
+        name='recipe',
+        description='Grab the recipe of any dish on the menu!',
+        usage='/recipe [dish ID/name]'
     )
-    async def serve(
+    async def recipe(
         self,
         ctx: discord.ApplicationContext,
-        dish: Option(str, description='ID/Name of the dish being served', required=True),
-        amount: Option(description='Amount of the dish that you want to serve', required=False)=1
+        dish: Option(str, description='The ID/name of the dish you want to fetch the recipe of.')
     ):
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have an account as you haven't played yet! Start with `/daily`!")
-
+        
         await ctx.defer()
-
-        for key, val in menu.items():
-            if dish.lower() not in [key, val[0]]:
-                return await ctx.respond(
-                    f"The dish {dish} was not found!"
+        
+        for key, value in menu.items():
+            if dish.lower() in [key.lower(), value[0]]:
+                ingredients = ', '.join(value[1])
+                
+                recipe_embed = discord.Embed(
+                    title=f"{value[3]} {key}'s Recipe",
+                    description=f"The ingredients required are: **{ingredients}**",
+                    color=discord.Colour.teal()
                 )
-            if not check_for_dish(ctx.author.id, val[0]):
-                return await ctx.respond(
-                    "You don't have that dish ready."
-                )
+                recipe_embed.set_footer(text=f"Use `/cook {value[0]}` to prepare this meal!")
+                
+                return await ctx.respond(embed=recipe_embed)
+        
+        await ctx.respond("No such dish!")
 
-            dish_amt = dish_count(ctx.author.id, val[0])
-            if dish_amt == 0:
-                return await ctx.respond(
-                    "You don't have that dish ready."
-                )
-            if amount in ['all', 'max']:
-                amount = dish_amt
-            elif int(dish_amt) < int(amount):
-                return await ctx.respond(
-                    f"You don't have `{amount}` {key}! You only have `{dish_amt}` {key}."
-                )
-
-            await update_l(ctx.author, amount*(random.randint(1, 3)))
-            remove_dish(ctx.author.id, val[0], amount)
-            update_data(ctx.author.id, 'cash', amount*val[6])
-
-            success_embed = discord.Embed(
-                title=f"{key} served!",
-                description=f"You served `{amount}x` {key} for `${amount*val[6]}`!",
-                embed=discord.Colour.teal()
-            )
-
-            return await ctx.respond(embed=success_embed)
 
 def setup(bot:commands.Bot):
-    bot.add_cog(Serve(bot))
+    bot.add_cog(Recipe(bot))

@@ -9,3 +9,4 @@ cogs/cook/__pycache__
 cogs/serve/__pycache__
 data/__pycache__
 utils/__pycache__
+.env

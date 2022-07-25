@@ -57,12 +57,15 @@ class Profile(commands.Cog):
         )
         profile_embed.add_field(
             name="Cash:",
-            value=f"${data['cash']}"
+            value=f"`${data['cash']}`",
+            inline=False
         )
         profile_embed.add_field(
-            name="Level:",
-            value=f"{data['level']}/{data['level_l']}"
+            name="XP:",
+            value=f"`{data['level']}`/`{data['level_l']}`",
+            inline=False
         )
+        profile_embed.set_thumbnail(url=ctx.author.avatar.url)
 
         return await ctx.respond(embed=profile_embed)
     

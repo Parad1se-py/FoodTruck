@@ -20,6 +20,7 @@
 # SOFTWARE.
 import asyncio
 import datetime
+import random
 
 import discord
 from discord.ext import commands
@@ -73,6 +74,7 @@ class Cook(commands.Cog):
                 remove_active(ctx.author.id, dish)
                 add_dish(ctx.author, dish, amount*value[2])
 
+                await update_l(ctx.author, amount*(random.randint(1, 3)))
                 await msg.edit(f"`{amount}`x **{key}** has been prepared!")
                 try:
                     await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
