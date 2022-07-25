@@ -67,7 +67,7 @@ class Inventory(commands.Cog):
                 min_values=1,
                 max_values=1
             )
-            async def _callback(self, select, interaction):
+            async def callback(self, select, interaction):
                 if select.values[0] == 'Cancel':
                     for child in self.children:
                         child.disabled = True
