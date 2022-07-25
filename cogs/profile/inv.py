@@ -42,117 +42,55 @@ class Inventory(commands.Cog):
     )
     async def inventory(self, ctx: discord.ApplicationContext):
         await ctx.defer()
-        
-        user_data = get_user_data(ctx.author.id)
+        user_acc = check_acc(ctx.author.id)
+        if not check_acc(ctx.author.id):
+            return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
-
-        class Dropdown(discord.ui.Select):
+        class DropdownView(discord.ui.View):
             def __init__(self, bot_: discord.Bot):
                 self.bot = bot_
+                super().__init__(timeout=15)
+
+            async def on_timeout(self):
+                for child in self.children:
+                    child.disabled = True
+                await msg.edit(content="Dropdown has been disabled, since you didn't answer (again/at all) within time limit.", view=self)
                 
+            @discord.ui.select(
                 options = [
                             discord.SelectOption(label="Ingredients", description="View your ingredients", emoji="🧂"),
                             discord.SelectOption(label="Cooking", description="View dishes being currently cooked", emoji="🍳"),
                             discord.SelectOption(label="Ready", description="View dishes that are prepared", emoji="🍰"),
                             discord.SelectOption(label="Cancel", description="Exit", emoji="❌"),
-                        ]
+                        ],
+                placeholder="Choose inventory mode:",
+                min_values=1,
+                max_values=1
+            )
+            async def _callback(self, select, interaction):
+                if select.values[0] == 'Cancel':
+                    for child in self.children:
+                        child.disabled = True
+                    return await msg.edit("Cancelled.", view=self)
 
-                super().__init__(
-                    placeholder="Choose inventory mode:",
-                    min_values=1,
-                    max_values=1,
-                    options=options,
-                )
+                elif select.values[0] == 'Ingredients':
+                    await interaction.response.send_message(embed=get_ing_embed(ctx.author.id))
 
-            async def callback(self, interaction: discord.Interaction):
-                if self.values[0] == 'Cancel':
-                    return await interaction.response.send_message("Exited.")
-                elif self.values[0] == 'Ingredients':
-                    inv = user_data['inv'].items()
-                    
-                    if not bool(inv) or len(inv) < 0:
-                        await interaction.response.send_message("No ingredients in your inventory!")
- 
-                    embed = discord.Embed(
-                        title='Ingredient List',
-                        description='These are your ingredients:',
-                        color=discord.Colour.teal()
-                    )
+                elif select.values[0] == 'Cooking':
+                    await interaction.response.send_message(embed=get_active_embed(ctx.author.id))
 
-                    for x in inv:
-                        data = get_shop_data(x[0])
-                        
-                        embed.add_field(
-                            name=f'{data[1][2]} {data[0]} - {x[1]}',
-                            value=f'Id: `{data[1][0]}`',
-                            inline=False
-                        )
-
-                    await interaction.response.send_message(embed=embed)
-
-                elif self.values[0] == 'Cooking':
-                    active = user_data['active'].items()
-                    
-                    if not bool(active) or len(active) < 0:
-                        await interaction.response.send_message("No dishes currently being prepared!")
-                        
-                    embed = discord.Embed(
-                        title='Active List',
-                        description='These are dishes being cooked:',
-                        color=discord.Colour.teal()
-                    )
-                    
-                    for x in active:
-                        data = get_menu_data(x[0])
-
-                        embed.add_field(
-                            name=f'{data[1][3]} {data[0]} - `x{x[1]}`',
-                            value=f'Id: {data[1][0]}'
-                        )
-                    
-                    await interaction.response.send_message(embed=embed)
-                    
-                elif self.values[0] == 'Ready':
-                    dishes = user_data['dishes'].items()
-                    
-                    if not bool(dishes) or len(dishes) < 0:
-                        await interaction.response.send_message("No dishes currently being prepared!")
-                        
-                    embed = discord.Embed(
-                        title='Ready Food List',
-                        description='These are dishes being cooked:',
-                        color=discord.Colour.teal()
-                    )
-                    
-                    for x in dishes:
-                        data = get_menu_data(x[0])
-
-                        embed.add_field(
-                            name=f'{data[1][3]} {data[0]} - `x{x[1]}`',
-                            value=f'Id: `{data[1][0]}`'
-                        )
-
-                    await interaction.response.send_message(embed=embed)
-                
-        class DropdownView(discord.ui.View):
-            def __init__(self, bot_: discord.Bot):
-                self.bot = bot_
-                super().__init__(Dropdown(self.bot), timeout=15)
-
-            async def on_timeout(self):
-                for child in self.children:
-                    child.disabled = True
-                await self.message.edit(content="You took too long! Disabled all the components.", view=self)
+                elif select.values[0] == 'Ready':
+                    await interaction.response.send_message(embed=get_ready_embed(ctx.author.id))
 
 
         view = DropdownView(self.bot)
-        
+
         embed = discord.Embed(
             title='Inventory',
             description='Select your option from the dropdown menu',
             color=discord.Colour.teal()
         )
-        await ctx.respond(embed=embed, view=view)
+        msg = await ctx.respond(embed=embed, view=view)
 
    
 def setup(bot:commands.Bot):

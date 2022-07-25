@@ -21,4 +21,4 @@
 
 from .db import *
 from .time_conv import *
-from .shop_menu import *
+from .inventory import *
