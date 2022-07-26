@@ -33,7 +33,7 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 1, "level_l": 1, "badges":[]}
+    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 1, "level_l": 10, "badges":[]}
     collection.insert_one(post)
     return True
 
@@ -55,19 +55,23 @@ def get_user_data(id):
     return collection.find_one({"_id": id})
 
 
-async def update_l(user, points):
+async def update_l(id, points):
     """Update a user's level"""
-    collection.update_one({"_id": user.id}, {"$inc": {"level_l": int(points)}})
-    lvl = collection.find_one({"_id": user.id})["level"]
-    lvll = collection.find_one({"_id": user.id})["level_l"]
+    collection.update_one({"_id": id}, {"$inc": {"level_l": int(points)}})
+    lvl = collection.find_one({"_id": id})["level"]
+    lvll = collection.find_one({"_id": id})["level_l"]
+    
+    if lvl+points == lvll:
+        collection.update_one({"_id": id}, {"$set": {"level": 1}})
+        collection.update_one({"_id": id}, {"$set": {"level_l": (lvl+1)*10}})        
+    elif lvl+points > lvll:
+        first_point = points-(lvll-lvl)
+        second_point = points - first_point
+        collection.update_one({"_id": id}, {"$set": {"level": second_point}})
+        collection.update_one({"_id": id}, {"$set": {"level_l": (lvl+1)*10}})
+    else:
+        collection.update_one({"_id": id}, {"$inc": {"level": points}})
 
-    if lvl == 0:
-        if lvll >= 5:
-            collection.update_one({"_id": user.id}, {"$set": {"level": 1}})
-            collection.update_one({"_id": user.id}, {"$set": {"level_l": 0}})
-    elif lvll >= lvl*10:
-        collection.update_one({"_id": user.id}, {"$set": {"level": lvl+1}})
-        collection.update_one({"_id": user.id}, {"$set": {"level_l": 0}})
 
 def add_item(user, item, amount=1):
     collection.update_one(

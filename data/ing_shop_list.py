@@ -27,5 +27,7 @@ ing_shop = {
     'Taco Shell': ['taco-shell', 5, '<:tacoshell:999343658451095752>', 'https://media.discordapp.net/attachments/945160755546849341/999343913905168394/taco-shell.jpg'],
     'Tortilla': ['tortilla', 5, '<:tortilla:999344252410671216>', 'https://media.discordapp.net/attachments/945160755546849341/999344196370579476/tortilla.png'],
     'Rice Fillings': ['rice-fillings', 10, '<:rice_fillings:1000249113243295764>', 'https://cdn.discordapp.com/attachments/897763276421759016/1000249106222026782/rice_fillings.png'],
-    
+    'Long Bun': ['long-bun', 5, '<:long_bun:1001486801866866829>', 'https://media.discordapp.net/attachments/897763276421759016/1001486860125745293/long_bun.png'],
+    'Sausage': ['sausage', 5, '<:sausage:1001487390700994590>', 'https://cdn.discordapp.com/attachments/897763276421759016/1001487387551092736/sausage.png'],
+    'Sauce': ['sauce', 1, '<:sauce:1001490105585905704>', 'https://cdn.discordapp.com/attachments/897763276421759016/1001490146853650562/sauce.png'],
 }
