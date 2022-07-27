@@ -26,7 +26,7 @@ from utils import *
 from data import *
 
 
-class ServerLeaderboard(commands.Cog):
+class Leaderboard(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
@@ -42,6 +42,8 @@ class ServerLeaderboard(commands.Cog):
         usage='/leaderboard global'
     )
     async def global_lb(self, ctx: discord.ApplicationContext):
+        await ctx.defer()
+        
         lb_data = collection.find().sort("cash", -1)
         
         emb = discord.Embed(
@@ -62,21 +64,21 @@ class ServerLeaderboard(commands.Cog):
             if i == 1:
                 user = await self.bot.get_or_fetch_user(x['_id'])
                 emb.add_field(
-                    name=f"**#{i}** 🥇 {user.name}",
+                    name=f"🥇 **#{i}** - {user.name}",
                     value=f"`${cash}`",
                     inline=False
                 )
             elif i == 2:
                 user = await self.bot.get_or_fetch_user(x['_id'])
                 emb.add_field(
-                    name=f"**#{i}** 🥈 {user.name}",
+                    name=f"🥈 **#{i}** - {user.name}",
                     value=f"`${cash}`",
                     inline=False
                 )
             elif i == 3:
                 user = await self.bot.get_or_fetch_user(x['_id'])
                 emb.add_field(
-                    name=f"**#{i}** 🥉 {user.name}",
+                    name=f"🥉 **#{index}** - {user.name}",
                     value=f"`${cash}`",
                     inline=False
                 )
@@ -89,6 +91,66 @@ class ServerLeaderboard(commands.Cog):
             index += 1
 
         return await ctx.respond(embed=emb)
+    
+    @lb.command(
+        name='server',
+        description='View the server leaderboard',
+        usage='/leaderboard server'
+    )
+    async def server(self, ctx: discord.ApplicationContext):
+        data = {}
+
+        await ctx.defer()
+
+        for member in ctx.guild.members:
+            udata = get_user_data(member.id)
+            if udata is None:
+                continue
+
+            data[member.id] = udata['cash']
+
+        if not data:
+            return await ctx.respond("No one in this server has any cash in the game.")
+
+        data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+
+        embed = discord.Embed(
+            title=f"{ctx.guild.name}'s Cash Leaderboard",
+            description='Don\'t see your name up here? Play more to earn more cash!',
+            color=discord.Colour.teal()
+        )
+
+        index = 1
+        for key, value in data.items():
+            if index == 11:
+                return await ctx.respond(embed=embed)
+            if index == 1:
+                embed.add_field(
+                    name=f"🥇 **#{index}** - {await self.bot.fetch_user(key)}",
+                    value=f"`${value}`",
+                    inline=False
+                )
+            elif index == 2:
+                embed.add_field(
+                    name=f"🥈 **#{index}** -  {await self.bot.fetch_user(key)}",
+                    value=f"`${value}`",
+                    inline=False
+                )
+            elif index == 3:
+                embed.add_field(
+                    name=f"🥉 **#{index}** -  {await self.bot.fetch_user(key)}",
+                    value=f"`${value}`",
+                    inline=False
+                )
+            else:
+                embed.add_field(
+                    name=f"**#{index}** - {await self.bot.fetch_user(key)}",
+                    value=f"`${value}`",
+                    inline=False
+                )
+            index += 1
+
+        return await ctx.respond(embed=embed)
 
 def setup(bot:commands.Bot):
-    bot.add_cog(ServerLeaderboard(bot))
+    bot.add_cog(Leaderboard(bot))
