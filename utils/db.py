@@ -33,7 +33,7 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 1, "level_l": 10, "badges":[]}
+    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 1, "level_l": 10, "badges":[], "lootboxes": {}}
     collection.insert_one(post)
     return True
 

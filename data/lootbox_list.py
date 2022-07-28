@@ -19,6 +19,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .ing_shop_list import *
-from .menu_list import *
-from .lootbox_list import *
+
+# Lootbox: [id, price, items, emoji, embed_link]
+lootboxes = {
+    'Normal': ['normal', 50, ['cash', 'level'], '<:lootbox_normal:1002172427087925279>', 'https://cdn.discordapp.com/attachments/897763276421759016/1002172824418525184/lootbox_normal.png'],
+    'Gold': ['gold', 500, ['cash', 'toppings', 'level'], '<:lootbox_gold:1002172422386106420>', 'https://cdn.discordapp.com/attachments/897763276421759016/1002172809822359603/lootbox_gold.png'],
+    'Mega': ['mega', 5000, ['cash', 'toppings', 'dish', 'level'], '<:lootbox_mega:1002172425150136340>', 'https://cdn.discordapp.com/attachments/897763276421759016/1002172825056067644/lootbox_mega.png'],
+
+}

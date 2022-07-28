@@ -60,6 +60,7 @@ class Inventory(commands.Cog):
                             discord.SelectOption(label="Ingredients", description="View your ingredients", emoji="🧂"),
                             discord.SelectOption(label="Cooking", description="View dishes being currently cooked", emoji="🍳"),
                             discord.SelectOption(label="Ready", description="View dishes that are prepared", emoji="🍰"),
+                            discord.SelectOption(label="Lootboxes", description="View lootboxes you have", emoji="📦"),
                             discord.SelectOption(label="Cancel", description="Exit", emoji="❌"),
                         ],
                 placeholder="Choose inventory mode:",
@@ -81,6 +82,8 @@ class Inventory(commands.Cog):
                 elif select.values[0] == 'Ready':
                     await interaction.response.send_message(embed=get_ready_embed(ctx.author.id))
 
+                elif select.values[0] == 'Lootboxes':
+                    await interaction.response.send_message(embed=get_lootboxes_embed(ctx.author.id))
 
         view = DropdownView(self.bot)
 

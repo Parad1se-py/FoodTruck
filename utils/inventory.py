@@ -97,3 +97,27 @@ def get_ready_embed(id):
                 )
                 
     return embed
+
+def get_lootboxes_embed(id):
+    embed = discord.Embed(
+        title='Ready-to-serve Food List',
+        color=discord.Colour.teal()
+    )
+
+    user_data = get_user_data(id)
+    lootbox = user_data['lootboxes'].items()
+    
+    if len(lootbox) <= 0:
+        embed.description = 'You don\'t have any lootboxes in your inventory.'
+    else:
+        embed.description = 'These are your ready-to-loot looboxes: '
+        
+    for x in lootbox:
+        for key, value in lootboxes.items():
+            if x[0] == value[0]:
+                embed.add_field(
+                    name=f'{value[3]} {key} - `x{x[1]}`',
+                    value=f'Id: {value[0]}'
+                )
+
+    return embed
