@@ -80,8 +80,7 @@ class Cook(commands.Cog):
                     await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
                 except Exception:
                     return
-            else:
-                return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
+        return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
 def setup(bot:commands.Bot):
     bot.add_cog(Cook(bot))
