@@ -51,7 +51,7 @@ class Lootbox(commands.Cog):
         for key, value in lootboxes.items():
             embed.add_field(
                 name=f'{value[3]} {key} - `${value[1]}`',
-                description=f'Id : `{value[0]}`'
+                value=f'Id : `{value[0]}`'
             )
             
         return await ctx.respond(embed=embed)
