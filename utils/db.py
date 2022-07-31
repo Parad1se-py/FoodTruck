@@ -130,6 +130,14 @@ def check_for_dish(id, item):
             return True
     except Exception:
         return False
+    
+def check_for_lootbox(id, item):
+    d = collection.find_one({"_id": int(id)})
+    try:
+        if d["lootboxes"][item] >= 1:
+            return True
+    except Exception:
+        return False
 
 def add_active(user, item, amount=1):
     collection.update_one(
@@ -156,3 +164,31 @@ def dish_count(id, item):
         return x['dishes'][item]
     else:
         return 0
+    
+def lootbox_count(id, item):
+    if _ := check_for_lootbox(id, item):
+        x = collection.find_one({"_id": int(id)})
+        return x['lootboxes'][item]
+    else:
+        return 0
+    
+def add_lootbox(id, item, amount=1):
+    collection.update_one(
+        {"_id": id},
+        {"$inc": {f"lootboxes.{item}": int(amount)}}
+    )
+
+def purge_lootbox(id, item, amount):
+    collection.update_one(
+        {"_id": id},
+        {"$unset": {f"lootboxes.{item}": amount}}
+    )
+
+def remove_lootboxes(id, item:str, amount:int=1):
+    if lootbox_count(id, item) == amount:
+        purge_lootbox(id, item, amount)
+    else:
+        collection.update_one(
+            {"_id": id},
+            {"$unset": {f"lootboxes.{item}": amount}}
+        )

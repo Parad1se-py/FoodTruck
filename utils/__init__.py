@@ -22,3 +22,4 @@
 from .db import *
 from .time_conv import *
 from .inventory import *
+from .lootbox_calc import *
