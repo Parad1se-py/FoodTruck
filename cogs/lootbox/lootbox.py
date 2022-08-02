@@ -193,6 +193,6 @@ class Lootbox(commands.Cog):
                 )
 
         return await ctx.respond("No such lootbox! Use `/lootboxes` to get a list of all lootboxes.\nUse `/inventory` to view your owned lootboxes!")
-                
+
 def setup(bot:commands.Bot):
     bot.add_cog(Lootbox(bot))
