@@ -34,6 +34,7 @@ class Ingredients_Shop(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='shop',
         description='View the ingredients shop!',
@@ -55,6 +56,7 @@ class Ingredients_Shop(commands.Cog):
 
         return await ctx.respond(embed=shop_embed)
     
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='buy',
         description='Buy an ingredient from the shop `/shop`',

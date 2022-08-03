@@ -35,6 +35,7 @@ class Inventory(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 7, commands.BucketType.user)
     @commands.slash_command(
         name='inventory',
         description='View your inventory',

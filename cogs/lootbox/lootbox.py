@@ -39,6 +39,7 @@ class Lootbox(commands.Cog):
         
     lootbox_slash_group = discord.SlashCommandGroup('lootbox', description='All commands related to FoodTruck lootboxes!')
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='lootboxes',
         description='Get a list of all the lootboxes',
@@ -60,6 +61,7 @@ class Lootbox(commands.Cog):
             
         return await ctx.respond(embed=embed)
         
+    @commands.cooldown(1, 3, commands.BucketType.user)
     @lootbox_slash_group.command(
         name='info',
         description='View details of a lootbox',
@@ -84,6 +86,7 @@ class Lootbox(commands.Cog):
 
         return await ctx.respond("No such lootbox found! Try the command `/lootboxes` to view all lootboxes.")
     
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @lootbox_slash_group.command(
         name='open',
         description='Open FoodTruck lootboxes that you own.',
@@ -160,6 +163,7 @@ class Lootbox(commands.Cog):
 
         return await ctx.respond("No such lootbox! Use `/lootboxes` to get a list of all lootboxes.\nUse `/inventory` to view your owned lootboxes!")
     
+    @commands.cooldown(1, 3, commands.BucketType.user)
     @lootbox_slash_group.command(
         name='buy',
         description='Buy a lootbox from the store!',

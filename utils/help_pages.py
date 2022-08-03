@@ -35,7 +35,7 @@ def get_page_1() -> discord.Embed:
     )
     page_1.add_field(
         name='`/help`',
-        value='Displays this command you\'re seeing right now. | Cooldown: `10s`',
+        value='Displays this command you\'re seeing right now. | Cooldown: `5s`',
         inline=False
     )
     page_1.add_field(
@@ -44,8 +44,13 @@ def get_page_1() -> discord.Embed:
         inline=False
     )
     page_1.add_field(
-        name='`/cash`',
+        name='`/balance`',
         value='View how much cash you got! | Cooldown: `5s`',
+        inline=False
+    )
+    page_1.add_field(
+        name='`/inventory`',
+        value='View your dishes, cooking, ingredients and lootboxes! | Cooldown: `7s`',
         inline=False
     )
     page_1.add_field(
@@ -78,13 +83,18 @@ def get_page_2() -> discord.Embed:
         inline=False
     )
     page_2.add_field(
+        name='`/recipe [dish-id]`',
+        value='View the recipe of a particular dish! | Cooldown: `5s`',
+        inline=False
+    )
+    page_2.add_field(
         name='`/cook [item-id] <amount>`',
-        value='Cook an item that is available on the menu! | Cooldown: `7s`',
+        value='Cook an item that is available on the menu! | Cooldown: `5s`',
         inline=False
     )
     page_2.add_field(
         name='`/serve [item-id] <amount>`',
-        value='Serve an item in your inventory to customers!',
+        value='Serve an item in your inventory to customers! | Cooldown: `3s`',
         inline=False
     )
     
@@ -109,6 +119,11 @@ def get_page_3() -> discord.Embed:
     page_3.add_field(
         name='`/lootboxes`',
         value='View all the lootboxes from FoodTruck. | Cooldown: `5s`',
+        inline=False
+    )
+    page_3.add_field(
+        name='`/lootbox info [lootbox-id]`',
+        value='Get information about a particular lootbox. | Cooldown: `3s`',
         inline=False
     )
     page_3.add_field(

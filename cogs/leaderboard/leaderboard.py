@@ -36,6 +36,7 @@ class Leaderboard(commands.Cog):
         
     lb = discord.SlashCommandGroup('leaderboard', description='See who ranks the highest!')
     
+    @commands.cooldown(1, 15, commands.BucketType.user)
     @lb.command(
         name='global',
         description='View the global leaderboard',
@@ -92,6 +93,7 @@ class Leaderboard(commands.Cog):
 
         return await ctx.respond(embed=emb)
     
+    @commands.cooldown(1, 15, commands.BucketType.user)
     @lb.command(
         name='server',
         description='View the server leaderboard',

@@ -34,6 +34,7 @@ class Profile(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='profile',
         description='View another player\'s profile.',
@@ -69,6 +70,7 @@ class Profile(commands.Cog):
 
         return await ctx.respond(embed=profile_embed)
     
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='balance',
         description='View your or another player\'s balance.',

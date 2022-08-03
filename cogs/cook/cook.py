@@ -38,6 +38,7 @@ class Cook(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='cook',
         description='Cook any item that you have unlovked from the menu!',

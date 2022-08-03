@@ -34,6 +34,7 @@ class Help(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='help',
         description='Don\'t know how to play? Looking for new commands? Then this is the command you\'re looking for.',

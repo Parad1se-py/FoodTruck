@@ -37,6 +37,7 @@ class Serve(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.slash_command(
         name='serve',
         description='Serve cooked food to your customers!',
