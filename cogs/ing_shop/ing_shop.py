@@ -77,6 +77,7 @@ class Ingredients_Shop(commands.Cog):
                     return await ctx.respond(f"You don't have enough money (`${amount*value[1]}`) to buy {item}!")
                 add_item(ctx.author, item, amount)
                 update_data(ctx.author.id, 'cash', -int(value[1]*amount))
+                await update_l(ctx.author.id, 3*amount)
                 success_embed = discord.Embed(
                     title="Successful Purchase",
                     description=f'You successfully bought `{amount}`x {value[2]} {key} for `${amount*value[1]}`!',

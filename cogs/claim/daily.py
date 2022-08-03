@@ -49,6 +49,7 @@ class Daily(commands.Cog):
         cash = random.randint(50, 550)
 
         update_data(ctx.author.id, 'cash', cash)
+        await update_l(ctx.author.id, 5)
         
         embed = discord.Embed(
             title='Daily loot reedemed!',
