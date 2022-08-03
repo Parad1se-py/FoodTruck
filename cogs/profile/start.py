@@ -47,10 +47,16 @@ class Start(commands.Cog):
                 color=discord.Colour.teal()
             )
             embed.add_field(
-                name='> **🤔 Don\'t know what to do?**',
-                value='Use `/help` to view more commands!'
+                name='Cook your first item!:',
+                value='1. Buy cheese `/buy cheese`\n2.Cook a taco! `/cook taco`',
+                inline=False
             )
-            
+            embed.add_field(
+                name='> **🤔 Don\'t know what to do?**',
+                value='Use `/help` to view more commands!',
+                inline=False
+            )
+
             return await ctx.respond(embed=embed)
         return await ctx.respond('You already seem to have an account! View your profile using `/profile`')
         

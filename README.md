@@ -15,6 +15,7 @@
 
 ## How To Use
  - Invite the bot to your server (Bot is best invited as database, token, etc is not given in code.)
+ - This bot is a slash application! No prefix.
  - Use `/start` to create a FoodTruck account and get started
  - You're done now! Use `/help` to retrieve a bunch of commands that you can use.
 
