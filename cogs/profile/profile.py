@@ -34,6 +34,7 @@ class Profile(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='profile',
         description='View another player\'s profile.',
@@ -57,15 +58,19 @@ class Profile(commands.Cog):
         )
         profile_embed.add_field(
             name="Cash:",
-            value=f"${data['cash']}"
+            value=f"`${data['cash']}`",
+            inline=False
         )
         profile_embed.add_field(
-            name="Level:",
-            value=f"{data['level']}/{data['level_l']}"
+            name="XP:",
+            value=f"`{data['level']}`/`{data['level_l']}`",
+            inline=False
         )
-        
+        profile_embed.set_thumbnail(url=ctx.author.avatar.url)
+
         return await ctx.respond(embed=profile_embed)
     
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='balance',
         description='View your or another player\'s balance.',

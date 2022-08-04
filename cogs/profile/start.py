@@ -19,45 +19,46 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import random
-
 import discord
 from discord.ext import commands
-from discord.commands import Option
 
 from utils import *
 
 
-class Daily(commands.Cog):
+class Start(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
-
+        
     @commands.slash_command(
-        name='daily',
-        description='Reedem your daily cash and free ingredients!',
-        usage='/daily'
+        name='start',
+        description='Get started with FoodTruck, create an account and get some freebies!',
+        usage='/start'
     )
-    @commands.cooldown(1, 86400, commands.BucketType.user)
-    async def daily(self, ctx: discord.ApplicationContext):
+    async def start(self, ctx:discord.ApplicationContext):
         if not check_acc(ctx.author.id):
             register(ctx.author)
-        
-        cash = random.randint(50, 550)
+            embed = discord.Embed(
+                title='Registered successfully!',
+                description='I have added `$500` cash to start with, and `cheese`, `veg-fillings` & `taco-shell` to your kitchen as well!',
+                color=discord.Colour.teal()
+            )
+            embed.add_field(
+                name='Cook your first item!:',
+                value='1. Buy cheese `/buy cheese`\n2.Cook a taco! `/cook taco`',
+                inline=False
+            )
+            embed.add_field(
+                name='> **🤔 Don\'t know what to do?**',
+                value='Use `/help` to view more commands!',
+                inline=False
+            )
 
-        update_data(ctx.author.id, 'cash', cash)
-        await update_l(ctx.author.id, 5)
+            return await ctx.respond(embed=embed)
+        return await ctx.respond('You already seem to have an account! View your profile using `/profile`')
         
-        embed = discord.Embed(
-            title='Daily loot reedemed!',
-            description=f'You reedemed `${cash}`!',
-            color=discord.Colour.teal()
-        )
-        
-        return await ctx.respond(embed=embed)
-
 def setup(bot:commands.Bot):
-    bot.add_cog(Daily(bot))
+    bot.add_cog(Start(bot))

@@ -22,11 +22,13 @@
 import discord
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Get configuration.json
 with open("configuration.json", "r") as config: 
 	data = json.load(config)
-	token = data["token"]
 	owner_id = data["owner_id"]
 
 # Intents
@@ -35,21 +37,21 @@ intents = discord.Intents.all()
 bot = discord.Bot(intents = intents, owner_id = owner_id)
 
 
-@bot.slash_command()
+@bot.slash_command(guild_ids=[765869842451398667])
 async def load(ctx, name):
     if ctx.author.id != int(owner_id):
         return
     bot.load_extension(f'cogs.{name}')
     await ctx.respond(f'Loaded {name}')
     
-@bot.slash_command()
+@bot.slash_command(guild_ids=[765869842451398667])
 async def unloaded(ctx, name):
     if ctx.author.id != int(owner_id):
         return
     bot.unload_extension(f'cogs.{name}')
     await ctx.respond(f'Unloaded {name}')
     
-@bot.slash_command()
+@bot.slash_command(guild_ids=[765869842451398667])
 async def reload(ctx, name):
 	if ctx.author.id != int(owner_id):
 		return
@@ -62,7 +64,7 @@ async def reload(ctx, name):
 for foldername in os.listdir('cogs'):
     for filename in os.listdir(f'cogs/{foldername}'):
         if filename.endswith('.py'):
-            bot.load_extension(f'cogs.{foldername}.{filename[:-3]}')
+            bot.load_extension(f'cogs.{foldername}.{filename[:-3]}', store=False)
 
 
 @bot.event
@@ -72,4 +74,4 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name = "Preparing dishes!"))
 
 # Run the bot
-bot.run(token)
+bot.run(os.getenv("TOKEN"))

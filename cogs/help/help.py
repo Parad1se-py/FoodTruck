@@ -19,6 +19,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .ing_shop_list import *
-from .menu_list import *
-from .lootbox_list import *
+import discord
+from discord.ext import commands
+from discord.ui import Button, View
+
+from utils.help_pages import get_help_embed_pages
+
+
+class Help(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} Cog has been loaded")
+        
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.slash_command(
+        name='help',
+        description='Don\'t know how to play? Looking for new commands? Then this is the command you\'re looking for.',
+        usage='/help'
+    )
+    async def help(self, ctx:discord.ApplicationContext, page:discord.Option(int, required=True)):
+        if page == 0:
+            return await ctx.respond("There's no page number \"0\"!\nOnly pages 1-3 are there.")
+        await ctx.defer()
+        
+        pages = get_help_embed_pages()
+
+        await ctx.respond(embed=pages[page-1])
+
+
+def setup(bot:commands.Bot):
+    bot.add_cog(Help(bot))
