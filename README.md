@@ -26,4 +26,8 @@
  - `python_dotenv` for loading .env
 
 ## Invite
+<<<<<<< HEAD
  [Invite Link](https://discord.com/api/oauth2/authorize?client_id=998186642273734799&permissions=412317379648&scope=bot%20applications.commands)
+=======
+ [Invite Link](https://discord.com/api/oauth2/authorize?client_id=998186642273734799&permissions=412317379648&scope=bot%20applications.commands)
+>>>>>>> 03a6d5ee6498fc2cfaeb03789e627b002d92f118
