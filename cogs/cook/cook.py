@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import asyncio
+import datetime
+import random
 
 import discord
 from discord.ext import commands
@@ -36,6 +38,7 @@ class Cook(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='cook',
         description='Cook any item that you have unlovked from the menu!',
@@ -67,14 +70,19 @@ class Cook(commands.Cog):
                     remove_item(ctx.author.id, ingredient, amount)
 
                 add_active(ctx.author, dish, amount)
-                msg = await ctx.respond(f"Your dish is being prepared! Come back in {value[5]/60:.1f} minute(s).")
-                asyncio.sleep(value[5])
-                remove_active(ctx.author.id)
-                add_dish(ctx.author, dish, amount)
-                await msg.edit(f"`{amount}`x **{key}** has been prepared!")
-            else:
-                return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
+                msg = await ctx.respond(f"Your dish is being prepared! Come back {convert_to_unix_time(datetime.datetime.now(), seconds=value[5])}.")
+                await asyncio.sleep(value[5])
+                remove_active(ctx.author.id, dish)
+                add_dish(ctx.author, dish, amount*value[2])
+                await update_l(ctx.author.id, 5*amount)
 
+                await update_l(ctx.author, amount*(random.randint(1, 3)))
+                await msg.edit(f"`{amount}`x **{key}** has been prepared!")
+                try:
+                    await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
+                except Exception:
+                    return
+        return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
 def setup(bot:commands.Bot):
     bot.add_cog(Cook(bot))

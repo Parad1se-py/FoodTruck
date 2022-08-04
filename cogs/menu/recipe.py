@@ -19,45 +19,52 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import random
-
 import discord
 from discord.ext import commands
 from discord.commands import Option
 
 from utils import *
+from data import *
 
-
-class Daily(commands.Cog):
+class Recipe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
-
+        
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
-        name='daily',
-        description='Reedem your daily cash and free ingredients!',
-        usage='/daily'
+        name='recipe',
+        description='Grab the recipe of any dish on the menu!',
+        usage='/recipe [dish ID/name]'
     )
-    @commands.cooldown(1, 86400, commands.BucketType.user)
-    async def daily(self, ctx: discord.ApplicationContext):
+    async def recipe(
+        self,
+        ctx: discord.ApplicationContext,
+        dish: Option(str, description='The ID/name of the dish you want to fetch the recipe of.')
+    ):
         if not check_acc(ctx.author.id):
-            register(ctx.author)
+            return await ctx.respond("You don't have an account as you haven't played yet! Start with `/daily`!")
         
-        cash = random.randint(50, 550)
+        await ctx.defer()
+        
+        for key, value in menu.items():
+            if dish.lower() in [key.lower(), value[0]]:
+                ingredients = ', '.join(value[1])
+                
+                recipe_embed = discord.Embed(
+                    title=f"{value[3]} {key}'s Recipe",
+                    description=f"The ingredients required are: **{ingredients}**",
+                    color=discord.Colour.teal()
+                )
+                recipe_embed.set_footer(text=f"Use `/cook {value[0]}` to prepare this meal!")
+                
+                return await ctx.respond(embed=recipe_embed)
+        
+        await ctx.respond("No such dish!")
 
-        update_data(ctx.author.id, 'cash', cash)
-        await update_l(ctx.author.id, 5)
-        
-        embed = discord.Embed(
-            title='Daily loot reedemed!',
-            description=f'You reedemed `${cash}`!',
-            color=discord.Colour.teal()
-        )
-        
-        return await ctx.respond(embed=embed)
 
 def setup(bot:commands.Bot):
-    bot.add_cog(Daily(bot))
+    bot.add_cog(Recipe(bot))

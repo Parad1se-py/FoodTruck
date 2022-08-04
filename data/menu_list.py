@@ -20,7 +20,10 @@
 # SOFTWARE.
 
 
-# Item: [id, ingredients, servings, emoji, level, time]
+# Item: [id, ingredients, servings, emoji, level, time, sell]
 menu = {
-    'Taco': ['taco', ('cheese', 'veg-salad', 'taco-shell'), 2, '<:taco_ft:999343822809092187>', 1, 60]
+    'Taco': ['taco', ('cheese', 'veg-fillings', 'taco-shell'), 2, '<:taco_ft:999343822809092187>', 1, 60, 40],
+    'Quesadilla': ['quesadilla', ('cheese', 'veg-fillings', 'tortilla'), 1, '<:quesadilla:1000244798025912370>', 1, 60, 40],
+    'Burrito': ['burrito', ('cheese', 'veg-fillings', 'tortilla', 'rice-fillings'), 1, '<:burrito_ft:1000244781928157295>', 1, 60, 55],
+    'Hot Dog': ['hot-dog', ('long-bun', 'veg-fillings', 'sausage', 'sauce'), 1, '<:hotdog_ft:1002183487312371752>', 2, 15, 35]
 }

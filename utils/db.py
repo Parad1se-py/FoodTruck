@@ -25,7 +25,7 @@ from pymongo import MongoClient
 with open("configuration.json", "r") as config: 
 	data = json.load(config)
 	username = data["mongo_username"]
-	password = data["mongo_pass"]
+	password = data["mongo_password"]
 
 cluster = MongoClient(f"mongodb+srv://{username}:{password}@cluster0.mosbb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = cluster["discord"]
@@ -33,7 +33,7 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {}, "active":{}, "dishes":{}, "level": 1, "level_l": 1, "badges":[]}
+    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "exp": 10, "exp_l": 10, "badges":[], "lootboxes": {}}
     collection.insert_one(post)
     return True
 
@@ -44,7 +44,7 @@ def check_acc(id):
 
 def update_data(id, mode, amount):
     """Update any data on the user"""
-    collection.update_one({"_id" : id}, {"$inc" : {str(mode): amount}})
+    collection.update_one({"_id" : id}, {"$inc" : {str(mode): int(amount)}})
     
 def get_all_data():
     """Get all users' data"""
@@ -55,20 +55,26 @@ def get_user_data(id):
     return collection.find_one({"_id": id})
 
 
-async def update_l(user, points):
+async def update_l(id, points):
     """Update a user's level"""
-    collection.update_one({"_id": user.id}, {"$inc": {"level_l": int(points)}})
-    lvl = collection.find_one({"_id": user.id})["level"]
-    lvll = collection.find_one({"_id": user.id})["level_l"]
+    collection.update_one({"_id": id}, {"$inc": {"level_l": int(points)}})
+    udata = get_user_data(id)
+    exp = udata["exp"]
+    exp_l = udata["exp_l"]
 
-    if lvl == 0:
-        if lvll >= 5:
-            collection.update_one({"_id": user.id}, {"$set": {"level": 1}})
-            collection.update_one({"_id": user.id}, {"$set": {"level_l": 0}})
-    elif lvll >= lvl*10:
-        collection.update_one({"_id": user.id}, {"$set": {"level": lvl+1}})
-        collection.update_one({"_id": user.id}, {"$set": {"level_l": 0}})
-        
+    if exp+points == exp_l:
+        collection.update_one({"_id": id}, {"$inc": {"level": 1}})
+        collection.update_one({"_id": id}, {"$set": {"level_l": (lvl+1)*10}})
+    elif exp+points > exp_l:
+        a = points-(exp_l - exp)
+        b = points - a
+        collection.update_one({"_id": id}, {"$set": {"exp": b}})
+        collection.update_one({"_id": id}, {"$set": {"exp_l": (exp+1)*10}})
+        collection.update_one({"_id": id}, {"$inc": {"level": 1}})
+    else:
+        collection.update_one({"_id": id}, {"$inc": {"exp": points}})
+
+
 def add_item(user, item, amount=1):
     collection.update_one(
         {"_id": user.id},
@@ -103,7 +109,7 @@ def purge_dish(id, item, amount):
     )
 
 def remove_dish(id, item:str, amount:int=1):
-    if item_count(id) == amount:
+    if item_count(id, item) == amount:
         purge_dish(id, item, amount)
     else:
         collection.update_one(
@@ -123,6 +129,14 @@ def check_for_dish(id, item):
     d = collection.find_one({"_id": int(id)})
     try:
         if d["dishes"][item] >= 1:
+            return True
+    except Exception:
+        return False
+    
+def check_for_lootbox(id, item):
+    d = collection.find_one({"_id": int(id)})
+    try:
+        if d["lootboxes"][item] >= 1:
             return True
     except Exception:
         return False
@@ -149,6 +163,34 @@ def item_count(id, item):
 def dish_count(id, item):
     if _ := check_for_dish(id, item):
         x = collection.find_one({"_id": int(id)})
-        return x['inv'][item]
+        return x['dishes'][item]
     else:
         return 0
+    
+def lootbox_count(id, item):
+    if _ := check_for_lootbox(id, item):
+        x = collection.find_one({"_id": int(id)})
+        return x['lootboxes'][item]
+    else:
+        return 0
+    
+def add_lootbox(id, item, amount=1):
+    collection.update_one(
+        {"_id": id},
+        {"$inc": {f"lootboxes.{item}": int(amount)}}
+    )
+
+def purge_lootbox(id, item, amount):
+    collection.update_one(
+        {"_id": id},
+        {"$unset": {f"lootboxes.{item}": amount}}
+    )
+
+def remove_lootboxes(id, item:str, amount:int=1):
+    if lootbox_count(id, item) == amount:
+        purge_lootbox(id, item, amount)
+    else:
+        collection.update_one(
+            {"_id": id},
+            {"$unset": {f"lootboxes.{item}": amount}}
+        )

@@ -34,6 +34,7 @@ class Ingredients_Shop(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
         
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='shop',
         description='View the ingredients shop!',
@@ -55,6 +56,7 @@ class Ingredients_Shop(commands.Cog):
 
         return await ctx.respond(embed=shop_embed)
     
+    @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='buy',
         description='Buy an ingredient from the shop `/shop`',
@@ -75,6 +77,7 @@ class Ingredients_Shop(commands.Cog):
                     return await ctx.respond(f"You don't have enough money (`${amount*value[1]}`) to buy {item}!")
                 add_item(ctx.author, item, amount)
                 update_data(ctx.author.id, 'cash', -int(value[1]*amount))
+                await update_l(ctx.author.id, 3*amount)
                 success_embed = discord.Embed(
                     title="Successful Purchase",
                     description=f'You successfully bought `{amount}`x {value[2]} {key} for `${amount*value[1]}`!',
