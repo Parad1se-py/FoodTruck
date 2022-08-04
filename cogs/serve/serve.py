@@ -56,9 +56,7 @@ class Serve(commands.Cog):
 
         for key, val in menu.items():
             if dish.lower() not in [key, val[0]]:
-                return await ctx.respond(
-                    f"The dish {dish} was not found!"
-                )
+                continue
             if not check_for_dish(ctx.author.id, val[0]):
                 return await ctx.respond(
                     "You don't have that dish ready."
@@ -87,6 +85,10 @@ class Serve(commands.Cog):
             )
 
             return await ctx.respond(embed=success_embed)
+        
+        return await ctx.respond(
+                            f"The dish {dish} was not found!"
+                        )
 
 def setup(bot:commands.Bot):
     bot.add_cog(Serve(bot))
