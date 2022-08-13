@@ -47,7 +47,7 @@ class Bet(commands.Cog):
                   bet: Option(int, 'Money to gamble', required=True)):
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
-        
+
         if bet < 200:
             return await ctx.respond("You need to bet atleast `$200`!")
 
@@ -61,37 +61,34 @@ class Bet(commands.Cog):
             color=discord.Colour.teal()
         )
         msg = await ctx.respond(embed=embed)
-        await asyncio.sleep(2)
-        
+        await asyncio.sleep(1.5)
+
         player_strikes, bot_strikes = random.randint(1, 12), random.randint(3, 12)
-        
+
         if player_strikes > bot_strikes:
             percent = random.randint(25, 100)
             amount_won = int(bet*(percent/100))
             update_data(ctx.author.id, 'cash', amount_won)
-            
+
             emb = discord.Embed(
                 title=f'{ctx.author.name}\'s Bet Results',
                 description=f'You won `${amount_won}`!\nPercent won: **{percent}%**',
                 color=discord.Colour.teal()
             )
-            
+
         elif bot_strikes > player_strikes:
             update_data(ctx.author.id, 'cash', -bet)
-            
+
             emb = discord.Embed(
                 title=f'{ctx.author.name}\'s Bet Results',
                 description=f'You lost `${amount_won}`...',
                 color=discord.Colour.teal()
             )
-            
+
         elif bot_strikes == player_strikes:
-            emb = discord.Embed(
-                title=f'{ctx.author.name}\'s Bet Results',
-                description=f'No one won! It was a tie.',
-                color=discord.Colour.teal()
-            )
-            
+            emb = discord.Embed(title=f'{ctx.author.name}\'s Bet Results', description='No one won! It was a tie.', color=discord.Colour.teal())
+
+
         emb.add_field(
             name='Player Strikes:',
             value=f'`{player_strikes}`'
@@ -100,7 +97,7 @@ class Bet(commands.Cog):
             name='FoodTruck Strikes:',
             value=f'`{bot_strikes}`'
         )
-        
+
         return await msg.edit(embed=emb)
 
 def setup(bot:commands.Bot):
