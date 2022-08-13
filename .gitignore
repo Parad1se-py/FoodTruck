@@ -1,5 +1,4 @@
 .vscode
-configuration.json
 cogs/ing_shop/__pycache__
 cogs/profile/__pycache__
 cogs/claim/__pycache__
