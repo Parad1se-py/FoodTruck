@@ -79,7 +79,7 @@ class Leaderboard(commands.Cog):
             elif i == 3:
                 user = await self.bot.get_or_fetch_user(x['_id'])
                 emb.add_field(
-                    name=f"🥉 **#{index}** - {user.name}",
+                    name=f"🥉 **#{i}** - {user.name}",
                     value=f"`${cash}`",
                     inline=False
                 )
