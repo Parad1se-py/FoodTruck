@@ -139,5 +139,44 @@ def get_page_3() -> discord.Embed:
     
     return page_3
 
+def get_page_4() -> discord.Embed:
+    page_4 = discord.Embed(
+        title='Help Menu',
+        description='If you\'re new, get started with `/start`!',
+        color=discord.Colour.teal()
+    )
+    page_4.add_field(
+        name='`/slots [bet]`',
+        value='Gamble your cash on the slots machine! | Cooldown: `15s`',
+        inline=False
+    )
+    page_4.add_field(
+        name='`/bet [bet]`',
+        value='Bet your money, see who gets the highest strike! | Cooldown: `10s`',
+        inline=False
+    )
+    page_4.add_field(
+        name='`/cup [bet]`',
+        value='Guess which cup has a candy under it! | Cooldown: `15s`',
+        inline=False
+    )
+    page_4.add_field(
+        name='`/lootbox info [lootbox-id]`',
+        value='Get information about a particular lootbox. | Cooldown: `3s`',
+        inline=False
+    )
+    page_4.add_field(
+        name='`/lootbox buy [lootbox-id] <amount>`',
+        value='Buy a lootbox to open for rewards! | Cooldown: `3s`',
+        inline=False
+    )
+    page_4.add_field(
+        name='`/lootbox open [lootbox-id] <amount>`',
+        value='Open a lootbox that you have! | Cooldown: `5s`',
+        inline=False
+    )
+    
+    return page_4
+
 def get_help_embed_pages() -> list:
-    return [get_page_1(), get_page_2(), get_page_3()]
+    return [get_page_1(), get_page_2(), get_page_3(), get_page_4]

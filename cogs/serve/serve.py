@@ -81,7 +81,7 @@ class Serve(commands.Cog):
             success_embed = discord.Embed(
                 title=f"{key} served!",
                 description=f"You served `{amount}x` {key} for `${amount*val[6]}`!",
-                embed=discord.Colour.teal()
+                color=discord.Colour.teal()
             )
 
             return await ctx.respond(embed=success_embed)
