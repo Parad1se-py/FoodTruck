@@ -74,7 +74,7 @@ class Serve(commands.Cog):
                     f"You don't have `{amount}` {key}! You only have `{dish_amt}` {key}."
                 )
 
-            await update_l(ctx.author, amount*(random.randint(1, 3)))
+            await update_l(ctx.author.id, amount*(random.randint(1, 3)))
             remove_dish(ctx.author.id, val[0], amount)
             update_data(ctx.author.id, 'cash', amount*val[6])
 
