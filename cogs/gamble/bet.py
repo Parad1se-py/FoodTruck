@@ -81,7 +81,7 @@ class Bet(commands.Cog):
 
             emb = discord.Embed(
                 title=f'{ctx.author.name}\'s Bet Results',
-                description=f'You lost `${amount_won}`...',
+                description=f'You lost `${bet}`...',
                 color=discord.Colour.teal()
             )
 
