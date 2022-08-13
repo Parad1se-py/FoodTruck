@@ -98,7 +98,7 @@ class Bet(commands.Cog):
             value=f'`{bot_strikes}`'
         )
 
-        return await msg.edit(embed=emb)
+        return await msg.edit_original_message(embed=emb)
 
 def setup(bot:commands.Bot):
     bot.add_cog(Bet(bot))
