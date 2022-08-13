@@ -19,15 +19,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import json
+import os
 
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
-with open("configuration.json", "r") as config: 
-	data = json.load(config)
-	username = data["mongo_username"]
-	password = data["mongo_password"]
 
-cluster = MongoClient(f"mongodb+srv://{username}:{password}@cluster0.mosbb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+load_dotenv()
+
+cluster = MongoClient(f"mongodb+srv://{os.getenv('MONGO_USERNAME')}:{os.getenv('MONGO_PASSWORD')}@cluster0.mosbb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = cluster["discord"]
 collection = db["foodtruck"]
 
@@ -61,6 +61,7 @@ async def update_l(id, points):
     udata = get_user_data(id)
     exp = udata["exp"]
     exp_l = udata["exp_l"]
+    lvl = udata["level"]
 
     if exp+points == exp_l:
         collection.update_one({"_id": id}, {"$inc": {"level": 1}})
