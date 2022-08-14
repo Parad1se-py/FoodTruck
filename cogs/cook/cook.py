@@ -74,9 +74,8 @@ class Cook(commands.Cog):
                 await asyncio.sleep(value[5])
                 remove_active(ctx.author.id, dish)
                 add_dish(ctx.author, dish, amount*value[2])
-                await update_l(ctx.author.id, 5*amount)
+                await update_l(ctx.author.id, amount*(random.randint(1, 3)))
 
-                await update_l(ctx.author, amount*(random.randint(1, 3)))
                 await msg.edit(f"`{amount}`x **{key}** has been prepared!")
                 try:
                     await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
