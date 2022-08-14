@@ -39,7 +39,7 @@ def calculate_level(lootbox) -> int:
         return random.randint(10, 20)
     elif lootbox.lower() == 'mega':
         return random.randint(25, 50)
-    
+
 def calculate_ingredients(lootbox) -> dict:
     if lootbox.lower() == 'normal':
         ings = ['cheese', 'veg-salad', 'sauce']

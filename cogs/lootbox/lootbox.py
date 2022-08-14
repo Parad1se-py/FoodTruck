@@ -129,7 +129,8 @@ class Lootbox(commands.Cog):
                         update_data(ctx.author.id, 'cash', cash)
                         final_embed.add_field(
                             name='Cash:',
-                            value=f'`${cash}`'
+                            value=f'`${cash}`',
+                            color=discord.Colour.teal()
                         )
                     elif reward == 'level':
                         lvl = calculate_level(key)
@@ -159,7 +160,7 @@ class Lootbox(commands.Cog):
                             value=', '.join(dishes_list)
                         )
                         
-                return await msg.edit(embed=final_embed)
+                return await msg.edit_original_message(embed=final_embed)
 
         return await ctx.respond("No such lootbox! Use `/lootboxes` to get a list of all lootboxes.\nUse `/inventory` to view your owned lootboxes!")
     
