@@ -77,10 +77,12 @@ class Cook(commands.Cog):
                 await update_l(ctx.author.id, amount*(random.randint(1, 3)))
 
                 await msg.edit(f"`{amount}`x **{key}** has been prepared!")
+                
                 try:
-                    await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
+                    return await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
                 except Exception:
                     return
+
         return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
 def setup(bot:commands.Bot):
