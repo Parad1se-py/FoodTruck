@@ -59,9 +59,11 @@ async def update_l(id, points):
     """Update a user's level"""
     collection.update_one({"_id": id}, {"$inc": {"level_l": int(points)}})
     udata = get_user_data(id)
-    exp = udata["exp"]
-    exp_l = udata["exp_l"]
-    lvl = udata["level"]
+    exp = int(udata["exp"])
+    exp_l = int(udata["exp_l"])
+    lvl = int(udata["level"])
+
+    points = int(points)
 
     if exp+points == exp_l:
         collection.update_one({"_id": id}, {"$inc": {"level": 1}})
