@@ -87,7 +87,7 @@ class Slots(commands.Cog):
             )
             update_data(ctx.author.id, 'cash', -bet)
 
-        await msg.edit(embed=emb)
+        await msg.edit_original_message(embed=emb)
 
 def setup(bot:commands.Bot):
     bot.add_cog(Slots(bot))
