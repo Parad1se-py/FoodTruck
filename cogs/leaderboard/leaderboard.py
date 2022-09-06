@@ -105,6 +105,8 @@ class Leaderboard(commands.Cog):
         await ctx.defer()
 
         for member in ctx.guild.members:
+            if member.bot:
+                continue
             udata = get_user_data(member.id)
             if udata is None:
                 continue
