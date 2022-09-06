@@ -25,7 +25,7 @@ import discord
 def get_page_1() -> discord.Embed:
     page_1 = discord.Embed(
         title='Help Menu',
-        description='If you\'re new, get started with `/start`!',
+        description='If you\'re new, get started with `/start`!\n`<>` = Not required, `[]` = required.',
         color=discord.Colour.teal()
     )
     page_1.add_field(
@@ -44,8 +44,8 @@ def get_page_1() -> discord.Embed:
         inline=False
     )
     page_1.add_field(
-        name='`/balance`',
-        value='View how much cash you got! | Cooldown: `5s`',
+        name='`/balance <user>` | `/bal <user>`',
+        value='View how much cash you/another user has! | Cooldown: `5s`',
         inline=False
     )
     page_1.add_field(
@@ -64,7 +64,7 @@ def get_page_1() -> discord.Embed:
 def get_page_2() -> discord.Embed:
     page_2 = discord.Embed(
         title='Help Menu',
-        description='If you\'re new, get started with `/start`!',
+        description='If you\'re new, get started with `/start`!\n`<>` = Not required, `[]` = required.',
         color=discord.Colour.teal()
     )
     page_2.add_field(
@@ -103,7 +103,7 @@ def get_page_2() -> discord.Embed:
 def get_page_3() -> discord.Embed:
     page_3 = discord.Embed(
         title='Help Menu',
-        description='If you\'re new, get started with `/start`!',
+        description='If you\'re new, get started with `/start`!\n`<>` = Not required, `[]` = required.',
         color=discord.Colour.teal()
     )
     page_3.add_field(
@@ -142,7 +142,7 @@ def get_page_3() -> discord.Embed:
 def get_page_4() -> discord.Embed:
     page_4 = discord.Embed(
         title='Help Menu',
-        description='If you\'re new, get started with `/start`!',
+        description='If you\'re new, get started with `/start`!\n`<>` = Not required, `[]` = required.',
         color=discord.Colour.teal()
     )
     page_4.add_field(
@@ -153,11 +153,6 @@ def get_page_4() -> discord.Embed:
     page_4.add_field(
         name='`/bet [bet]`',
         value='Bet your money, see who gets the highest strike! | Cooldown: `10s`',
-        inline=False
-    )
-    page_4.add_field(
-        name='`/cup [bet]`',
-        value='Guess which cup has a candy under it! | Cooldown: `15s`',
         inline=False
     )
     page_4.add_field(

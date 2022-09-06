@@ -76,6 +76,11 @@ class Profile(commands.Cog):
         description='View your or another player\'s balance.',
         usage='/balance <member>'
     )
+    @commands.slash_command(
+        name='bal',
+        description='View your or another player\'s balance.',
+        usage='/bal <member>'
+    )
     async def bal(self,
                       ctx: discord.ApplicationContext,
                       member : Option(discord.Member, required=False)=None):
