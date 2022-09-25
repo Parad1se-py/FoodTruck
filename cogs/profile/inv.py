@@ -53,9 +53,11 @@ class Inventory(commands.Cog):
 
             async def on_timeout(self):
                 for child in self.children:
+                    if child.disabled == True:
+                        return
                     child.disabled = True
                 await msg.edit(content="Dropdown has been disabled, since you didn't answer (again/at all) within time limit.", view=self)
-                
+
             @discord.ui.select(
                 options = [
                             discord.SelectOption(label="Ingredients", description="View your ingredients", emoji="🧂"),
@@ -68,11 +70,11 @@ class Inventory(commands.Cog):
                 min_values=1,
                 max_values=1
             )
-            async def callback(self, select, interaction):
+            async def callback(self, select, interaction:discord.Interaction):
                 if select.values[0] == 'Cancel':
                     for child in self.children:
                         child.disabled = True
-                    return await msg.edit("Cancelled.", view=self)
+                    return await interaction.response.edit_message(content="Cancelled.", view=self)
 
                 elif select.values[0] == 'Ingredients':
                     await interaction.response.send_message(embed=get_ing_embed(ctx.author.id))

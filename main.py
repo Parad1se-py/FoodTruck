@@ -43,14 +43,14 @@ async def load(ctx, name):
         return
     bot.load_extension(f'cogs.{name}')
     await ctx.respond(f'Loaded {name}')
-    
+
 @bot.slash_command(guild_ids=[765869842451398667])
 async def unloaded(ctx, name):
     if ctx.author.id != int(owner_id):
         return
     bot.unload_extension(f'cogs.{name}')
     await ctx.respond(f'Unloaded {name}')
-    
+
 @bot.slash_command(guild_ids=[765869842451398667])
 async def reload(ctx, name):
 	if ctx.author.id != int(owner_id):
