@@ -174,4 +174,4 @@ def get_page_4() -> discord.Embed:
     return page_4
 
 def get_help_embed_pages() -> list:
-    return [get_page_1(), get_page_2(), get_page_3(), get_page_4]
+    return [get_page_1(), get_page_2(), get_page_3(), get_page_4()]

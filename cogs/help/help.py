@@ -20,7 +20,7 @@
 # SOFTWARE.
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, pages
 from discord.ui import Button, View
 
 from utils.help_pages import get_help_embed_pages
@@ -29,6 +29,10 @@ from utils.help_pages import get_help_embed_pages
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.pages = get_help_embed_pages()
+
+    def get_pages(self):
+        return self.pages
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -40,14 +44,17 @@ class Help(commands.Cog):
         description='Don\'t know how to play? Looking for new commands? Then this is the command you\'re looking for.',
         usage='/help'
     )
-    async def help(self, ctx:discord.ApplicationContext, page:discord.Option(int, required=True)):
-        if page == 0:
-            return await ctx.respond("There's no page number \"0\"!\nOnly pages 1-3 are there.")
+    async def help(self, ctx:discord.ApplicationContext):
         await ctx.defer()
-        
-        pages = get_help_embed_pages()
 
-        await ctx.respond(embed=pages[page-1])
+        paginator = pages.Paginator(
+            pages = self.get_pages(),
+            show_disabled=True,
+            show_indicator=True,
+            use_default_buttons=True,
+            loop_pages=True,
+        )
+        await paginator.respond(ctx.interaction, ephemeral=False)
 
 
 def setup(bot:commands.Bot):
