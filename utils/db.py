@@ -33,7 +33,7 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "exp": 10, "exp_l": 10, "badges":[], "lootboxes": {}}
+    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "exp": 10, "badges":[], "lootboxes": {}}
     collection.insert_one(post)
     return True
 
@@ -54,29 +54,19 @@ def get_user_data(id):
     """Get a specific user's data"""
     return collection.find_one({"_id": id})
 
-
-async def update_l(id, points):
+async def update_l(id:int, exp:int):
     """Update a user's level"""
-    collection.update_one({"_id": id}, {"$inc": {"level_l": int(points)}})
+    collection.update_one({"_id": id}, {"$inc": {"exp": exp}})
+
     udata = get_user_data(id)
     exp = int(udata["exp"])
-    exp_l = int(udata["exp_l"])
     lvl = int(udata["level"])
 
-    points = int(points)
+    while exp >= lvl*10:
+        exp -= lvl*10
+        lvl += 1
 
-    if exp+points == exp_l:
-        collection.update_one({"_id": id}, {"$inc": {"level": 1}})
-        collection.update_one({"_id": id}, {"$set": {"level_l": (lvl+1)*10}})
-    elif exp+points > exp_l:
-        a = points-(exp_l - exp)
-        b = points - a
-        collection.update_one({"_id": id}, {"$set": {"exp": b}})
-        collection.update_one({"_id": id}, {"$set": {"exp_l": (exp+1)*10}})
-        collection.update_one({"_id": id}, {"$inc": {"level": 1}})
-    else:
-        collection.update_one({"_id": id}, {"$inc": {"exp": points}})
-
+    collection.update_one({"_id": id}, {"$inc": {"level": lvl-udata["level"]}})
 
 def add_item(user, item, amount=1):
     collection.update_one(

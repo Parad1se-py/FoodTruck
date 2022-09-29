@@ -50,7 +50,7 @@ class Lootbox(commands.Cog):
 
         embed = discord.Embed(
             title='Lootboxes',
-            color=discord.Colour.teal()
+            colour=discord.Colour.teal()
         )
         
         for key, value in lootboxes.items():
@@ -78,7 +78,7 @@ class Lootbox(commands.Cog):
                 embed = discord.Embed(
                     title=f'{value[3]} {key}',
                     description=f'Cost: `${value[1]}`, Id: `{value[0]}`\nGives: **{possible_items}**',
-                    color=discord.Colour.teal()
+                    colour=discord.Colour.teal()
                 )
                 embed.set_thumbnail(url=value[4])
 
@@ -110,7 +110,7 @@ class Lootbox(commands.Cog):
                 
                 initial_embed = discord.Embed(
                     title=f'Opening {key} lootbox...',
-                    color=discord.Colour.teal()
+                    colour=discord.Colour.teal()
                 )
                 
                 msg = await ctx.respond(embed=initial_embed)
@@ -126,17 +126,16 @@ class Lootbox(commands.Cog):
                 for reward in value[2]:
                     if reward == 'cash':
                         cash = calculate_cash(key)
-                        update_data(ctx.author.id, 'cash', cash)
+                        update_data(ctx.author.id, 'cash', cash*amount)
                         final_embed.add_field(
                             name='Cash:',
                             value=f'`${cash}`',
-                            color=discord.Colour.teal()
                         )
                     elif reward == 'level':
                         lvl = calculate_level(key)
-                        await update_l(ctx.author.id, lvl)
+                        await update_l(ctx.author.id, lvl*amount)
                         final_embed.add_field(
-                            name='Level points:',
+                            name='Exp points:',
                             value=f'`{lvl}`'
                         )
                     elif reward == 'ingredients':
@@ -160,7 +159,7 @@ class Lootbox(commands.Cog):
                             value=', '.join(dishes_list)
                         )
                         
-                return await msg.edit_original_message(embed=final_embed)
+                return await msg.edit(embed=final_embed)
 
         return await ctx.respond("No such lootbox! Use `/lootboxes` to get a list of all lootboxes.\nUse `/inventory` to view your owned lootboxes!")
     
@@ -193,7 +192,7 @@ class Lootbox(commands.Cog):
                     embed = discord.Embed(
                         title="Successful purchase!",
                         description=f"You successfully bought `{amount}x` **{key}** lootbox for `${value[1]*amount}`!",
-                        color=discord.Colour.teal()
+                        colour=discord.Colour.teal()
                     )
                 )
 

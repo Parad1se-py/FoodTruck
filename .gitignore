@@ -9,6 +9,7 @@ cogs/serve/__pycache__
 cogs/leaderboard/__pycache__
 cogs/lootbox/__pycache__
 cogs/help/__pycache__
+cogs/gamble/__pycache__
 data/__pycache__
 utils/__pycache__
 .env

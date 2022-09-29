@@ -31,8 +31,7 @@ def get_ing_embed(id):
         color=discord.Colour.teal()
     )
     
-    user_data = get_user_data(id)
-    inv = user_data['inv'].items()
+    inv = get_user_data(id)['inv'].items()
     
     if len(inv) <= 0:
         embed.description = 'You currently have no ingredients in your inventory!'
@@ -56,8 +55,7 @@ def get_active_embed(id):
         color=discord.Colour.teal()
     )
 
-    user_data = get_user_data(id)
-    dishes = user_data['active'].items()
+    dishes = get_user_data(id)['active'].items()
     
     if len(dishes) <= 0:
         embed.description = 'You don\'t have any dishes currently being cooked!'
@@ -80,8 +78,7 @@ def get_ready_embed(id):
         color=discord.Colour.teal()
     )
 
-    user_data = get_user_data(id)
-    dishes = user_data['dishes'].items()
+    dishes = get_user_data(id)['dishes'].items()
     
     if len(dishes) <= 0:
         embed.description = 'You don\'t have any dishes that are cooked!'
@@ -100,12 +97,11 @@ def get_ready_embed(id):
 
 def get_lootboxes_embed(id):
     embed = discord.Embed(
-        title='Ready-to-serve Food List',
+        title='Lootbox List',
         color=discord.Colour.teal()
     )
 
-    user_data = get_user_data(id)
-    lootbox = user_data['lootboxes'].items()
+    lootbox = get_user_data(id)['lootboxes'].items()
     
     if len(lootbox) <= 0:
         embed.description = 'You don\'t have any lootboxes in your inventory.'
