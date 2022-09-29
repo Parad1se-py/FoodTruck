@@ -44,7 +44,7 @@ def get_page_1() -> discord.Embed:
         inline=False
     )
     page_1.add_field(
-        name='`/balance <user>` | `/bal <user>`',
+        name='`/balance <user>`',
         value='View how much cash you/another user has! | Cooldown: `5s`',
         inline=False
     )
@@ -55,7 +55,7 @@ def get_page_1() -> discord.Embed:
     )
     page_1.add_field(
         name='`/start`',
-        value='New to FoodTruck? Use this command and open an account & freebies! | One-time use',
+        value='New to FoodTruck? Use this command to open an account & get freebies! | One-time use',
         inline=False
     )
     

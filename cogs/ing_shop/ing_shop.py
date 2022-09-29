@@ -55,7 +55,7 @@ class Ingredients_Shop(commands.Cog):
             )
 
         return await ctx.respond(embed=shop_embed)
-    
+
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(
         name='buy',
