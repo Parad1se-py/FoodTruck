@@ -86,7 +86,7 @@ def remove_item(id, item:str, amount:int=1):
     else:
         collection.update_one(
             {"_id": id},
-            {"$unset": {f"inv.{item}": amount}}
+            {"$inc": {f"inv.{item}": -amount}}
         )
         
 def add_dish(user, item, amount=1):
@@ -107,7 +107,7 @@ def remove_dish(id, item:str, amount:int=1):
     else:
         collection.update_one(
             {"_id": id},
-            {"$unset": {f"dishes.{item}": amount}}
+            {"$inc": {f"dishes.{item}": -amount}}
         )
 
 def check_for_item(id, item):
@@ -143,7 +143,7 @@ def add_active(user, item, amount=1):
 def remove_active(id, item:str, amount:int=1):
     collection.update_one(
         {"_id": id},
-        {"$unset": {f"active.{item}": amount}}
+        {"$inc": {f"active.{item}": -amount}}
     )
     
 def item_count(id, item):
@@ -185,5 +185,5 @@ def remove_lootboxes(id, item:str, amount:int=1):
     else:
         collection.update_one(
             {"_id": id},
-            {"$unset": {f"lootboxes.{item}": amount}}
+            {"$inc": {f"lootboxes.{item}": -amount}}
         )
