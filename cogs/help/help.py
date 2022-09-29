@@ -53,6 +53,8 @@ class Help(commands.Cog):
             show_indicator=True,
             use_default_buttons=True,
             loop_pages=True,
+            disable_on_timeout=True,
+            timeout=15
         )
         await paginator.respond(ctx.interaction, ephemeral=False)
 
