@@ -51,7 +51,7 @@ class Menu(commands.Cog):
             ingredients = ', '.join(value[1])
             shop_embed.add_field(
                 name=f"{value[3]} {key} | Id: `{value[0]}`",
-                value=f"{value[6]} | Makes `{value[2]}` | Level required: __`{value[4]}`__\n"\
+                value=f"`${value[6]}` | Makes `{value[2]}` | Level required: __`{value[4]}`__\n"\
                        f"**{ingredients}**",
                 inline=False
             )
