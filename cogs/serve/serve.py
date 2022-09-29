@@ -47,7 +47,7 @@ class Serve(commands.Cog):
         self,
         ctx: discord.ApplicationContext,
         dish: Option(str, description='ID/Name of the dish being served', required=True),
-        amount: Option(description='Amount of the dish that you want to serve', required=False)=1
+        amount: Option(str, description='Amount of the dish that you want to serve', required=False)=1
     ):
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have an account as you haven't played yet! Start with `/daily`!")
@@ -62,33 +62,33 @@ class Serve(commands.Cog):
                     "You don't have that dish ready."
                 )
 
-            dish_amt = dish_count(ctx.author.id, val[0])
+            dish_amt = int(dish_count(ctx.author.id, val[0]))
             if dish_amt == 0:
                 return await ctx.respond(
-                    "You don't have that dish ready."
+                    "You don't have that dish ready; cook it."
                 )
-            if amount in ['all', 'max']:
-                amount = dish_amt
-            elif int(dish_amt) < int(amount):
+            amount = dish_amt if amount in ['all', 'max'] else int(amount)
+
+            if dish_amt < amount:
                 return await ctx.respond(
                     f"You don't have `{amount}` {key}! You only have `{dish_amt}` {key}."
-                )
+            )
 
-            await update_l(ctx.author.id, amount*(random.randint(1, 3)))
+            await update_l(ctx.author.id, int(amount*(random.randint(1, 3))))
             remove_dish(ctx.author.id, val[0], amount)
             update_data(ctx.author.id, 'cash', amount*val[6])
 
             success_embed = discord.Embed(
                 title=f"{key} served!",
-                description=f"You served `{amount}x` {key} for `${amount*val[6]}`!",
+                description=f"You served `{amount*val[2]}x` {key} for `${amount*val[6]}`!",
                 color=discord.Colour.teal()
             )
 
             return await ctx.respond(embed=success_embed)
-        
+
         return await ctx.respond(
                             f"The dish {dish} was not found!"
-                        )
+        )
 
 def setup(bot:commands.Bot):
     bot.add_cog(Serve(bot))

@@ -76,10 +76,10 @@ class Cook(commands.Cog):
                 add_dish(ctx.author, dish, amount*value[2])
                 await update_l(ctx.author.id, amount*(random.randint(1, 3)))
 
-                await msg.edit(f"`{amount}`x **{key}** has been prepared!")
+                await msg.edit(f"`{amount*value[2]}`x **{key}** has been prepared!")
                 
                 try:
-                    return await ctx.author.send(f"`{amount}`x **{key}** has been prepared!")
+                    return await ctx.author.send(f"`{amount*value[2]}`x **{key}** has been prepared!")
                 except Exception:
                     return
 

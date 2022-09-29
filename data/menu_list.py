@@ -22,7 +22,7 @@
 
 # Item: [id, ingredients, servings, emoji, level, time, sell]
 menu = {
-    'Taco': ['taco', ('cheese', 'veg-fillings', 'taco-shell'), 10, '<:taco_ft:999343822809092187>', 1, 60, 100],
+    'Taco': ['taco', ('cheese', 'veg-fillings', 'taco-shells'), 10, '<:taco_ft:999343822809092187>', 1, 60, 100],
 
     'Quesadilla': ['quesadilla', ('cheese', 'veg-fillings', 'tortilla'), 5, '<:quesadilla:1000244798025912370>', 1, 60, 100],
 

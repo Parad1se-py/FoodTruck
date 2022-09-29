@@ -26,7 +26,7 @@ ing_shop = {
 
     'Veg Fillings': ['veg-fillings', 30, '<:veg_fillings_ft:999341079394537542>', 'https://cdn.discordapp.com/attachments/945160755546849341/999341184889655346/salad.png'],
 
-    'Taco Shell': ['taco-shell', 20, '<:tacoshell:999343658451095752>', 'https://media.discordapp.net/attachments/945160755546849341/999343913905168394/taco-shell.jpg'],
+    'Taco Shells': ['taco-shells', 20, '<:tacoshell:999343658451095752>', 'https://media.discordapp.net/attachments/945160755546849341/999343913905168394/taco-shell.jpg'],
 
     'Tortilla': ['tortilla', 20, '<:tortilla:999344252410671216>', 'https://media.discordapp.net/attachments/945160755546849341/999344196370579476/tortilla.png'],
 
