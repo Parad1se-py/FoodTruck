@@ -19,7 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import discord
-from discord.ext import commands
+from discord.ext import commands, pages
 from discord.commands import Option
 
 from utils import *
@@ -29,6 +29,10 @@ from data import *
 class Ingredients_Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.pages = get_shop_embed_pages()
+
+    def get_pages(self):
+        return self.pages
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -41,20 +45,18 @@ class Ingredients_Shop(commands.Cog):
         usage='/shop'
     )
     async def shop(self, ctx: discord.ApplicationContext):
-        shop_embed = discord.Embed(
-            title="FoodTruck Ingredients Shop!",
-            description="Use `/buy [item_id] <amt>` to buy any ingredient!",
-            color=discord.Colour.teal()
+        await ctx.defer()
+
+        paginator = pages.Paginator(
+            pages = self.get_pages(),
+            show_disabled=True,
+            show_indicator=True,
+            use_default_buttons=True,
+            loop_pages=True,
+            disable_on_timeout=True,
+            timeout=15
         )
-
-        for key, value in ing_shop.items():
-            shop_embed.add_field(
-                name=f"{value[2]} {key}",
-                value=f"`${value[1]}` | Id : `{value[0]}`",
-                inline=False
-            )
-
-        return await ctx.respond(embed=shop_embed)
+        await paginator.respond(ctx.interaction, ephemeral=False)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.slash_command(

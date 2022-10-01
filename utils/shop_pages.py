@@ -19,18 +19,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import discord
 
-# Item: [id, ingredients, servings, emoji, level, time, sell]
-menu = {
-    'Taco': ['taco', ('cheese', 'veg-fillings', 'taco-shells'), 10, '<:taco_ft:999343822809092187>', 1, 60, 100],
+from data import *
 
-    'Quesadilla': ['quesadilla', ('cheese', 'veg-fillings', 'tortilla'), 5, '<:quesadilla:1000244798025912370>', 1, 60, 100],
 
-    'Burrito': ['burrito', ('cheese', 'veg-fillings', 'tortilla', 'rice-fillings'), 10, '<:burrito_ft:1000244781928157295>', 5, 60, 125],
+def get_page(x, y) -> discord.Embed:
+    embed = discord.Embed(
+        title='Ingredients Shop',
+        description='You can buy these ingredients using the buy command: `/buy <ingredient> [amount]`',
+        color=discord.Colour.teal()
+    )
 
-    'Hot Dog': ['hot-dog', ('long-bun', 'sausage', 'sauce'), 15, '<:hotdog_ft:1002183487312371752>', 5, 15, 50],
+    for i, (key, value) in enumerate(ing_shop.items(), start=1):
+        if i >= x:
+            if i > y:
+                return embed
+            embed.add_field(
+                name=f"{value[2]} {key}",
+                value=f"`${value[1]}` | Id : `{value[0]}`",
+                inline=False
+            )
+    return embed
 
-    'Garlic Bread': ['garlic-bread', ('dough', 'cheese', 'seasoning'), 10, '<:garlic_bread:1025796734716219514>', 10, 90, 70],
-
-    'Pizza': ['pizza', ('dough', 'cheese', 'toppings', 'seasoning', 'sauce'), 5, '<:pizza_ft:1025797230269038592>', 10, 120, 100]
-}
+def get_shop_embed_pages() -> list:
+    return [get_page(1, 6), get_page(7, 12)]

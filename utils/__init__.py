@@ -24,3 +24,4 @@ from .time_conv import *
 from .inventory import *
 from .lootbox_calc import *
 from .help_pages import *
+from .shop_pages import *

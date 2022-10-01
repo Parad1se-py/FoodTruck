@@ -37,4 +37,10 @@ ing_shop = {
     'Sausage': ['sausage', 15, '<:sausage:1001487390700994590>', 'https://cdn.discordapp.com/attachments/897763276421759016/1001487387551092736/sausage.png'],
 
     'Sauce': ['sauce', 5, '<:sauce:1001490105585905704>', 'https://cdn.discordapp.com/attachments/897763276421759016/1001490146853650562/sauce.png'],
+
+    'Dough': ['dough', 25, '<:Dough:1025795923244228809>', 'https://media.discordapp.net/attachments/1015861699162689576/1025796016064172102/Dough.png'],
+
+    'Seasoning': ['seasoning', 5, '<:seasoning:1025816165773221888>', 'https://media.discordapp.net/attachments/1015861699162689576/1025816237990744074/seasoning.png?width=671&height=671'],
+
+    'Toppings': ['toppings', 15, '<:topping:1025814758621978664>', 'https://media.discordapp.net/attachments/1015861699162689576/1025814832609497118/PngItem_1816873.png?width=671&height=671']
 }
