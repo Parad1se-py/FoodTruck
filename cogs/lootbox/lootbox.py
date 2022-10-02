@@ -35,7 +35,7 @@ class Lootbox(commands.Cog):
         self.loaded_lootboxes_list = [x for x, y in lootboxes.items()]
 
     async def lootbox_searcher(self, ctx: discord.AutocompleteContext):
-        return [lootbox for lootbox in self.loaded_lootboxes_list if lootbox.startswith(ctx.value.lower())]
+        return [lootbox for lootbox in self.loaded_lootboxes_list if lootbox.lower().startswith(ctx.value.lower())]
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -191,7 +191,7 @@ class Lootbox(commands.Cog):
                     return await ctx.respond(f"You don't have enough cash (`${value[1]*amount}`) to buy this lootbox")
  
                 update_data(ctx.author.id, 'cash', -(value[1]*amount))
-                add_lootbox(ctx.author.id, value[0], amount)
+                add_lootbox(ctx.author.id, key, amount)
                 
                 return await ctx.respond(
                     embed = discord.Embed(

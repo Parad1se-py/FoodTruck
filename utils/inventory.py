@@ -37,10 +37,10 @@ def get_ing_embed(id):
         embed.description = 'You currently have no ingredients in your inventory!'
     else:
         embed.description = 'These are your ingredients:'
-    
+
     for x in inv:
         for key, value in ing_shop.items():
-            if x[0] == value[0]:
+            if x[0] in [value[0], key.lower()]:
                 embed.add_field(
                     name=f'{value[2]} {key} - {x[1]}',
                     value=f'Id: `{value[0]}`',
@@ -64,7 +64,7 @@ def get_active_embed(id):
 
     for x in dishes:
         for key, value in menu.items():
-            if x[0] == value[0]:
+            if x[0] in [value[0], key.lower()]:
                 embed.add_field(
                     name=f'{value[3]} {key} - `x{x[1]}`',
                     value=f'Id: {value[0]}'
@@ -79,20 +79,20 @@ def get_ready_embed(id):
     )
 
     dishes = get_user_data(id)['dishes'].items()
-    
+
     if len(dishes) <= 0:
         embed.description = 'You don\'t have any dishes that are cooked!'
     else:
         embed.description = 'These are the dishes that are ready-to-serve: '
-    
+
     for x in dishes:
         for key, value in menu.items():
-            if x[0] == value[0]:
+            if x[0] in [value[0], key.lower()]:
                 embed.add_field(
                     name=f'{value[3]} {key} - `x{x[1]}`',
                     value=f'Id: {value[0]}'
                 )
-                
+
     return embed
 
 def get_lootboxes_embed(id):
@@ -110,7 +110,7 @@ def get_lootboxes_embed(id):
         
     for x in lootbox:
         for key, value in lootboxes.items():
-            if x[0] == value[0]:
+            if x[0] in [value[0], key.lower()]:
                 embed.add_field(
                     name=f'{value[3]} {key} - `x{x[1]}`',
                     value=f'Id: {value[0]}'

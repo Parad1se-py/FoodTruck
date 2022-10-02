@@ -32,7 +32,7 @@ class Recipe(commands.Cog):
         self.loaded_menu_list = [x for x, y in menu.items()]
 
     async def item_searcher(self, ctx: discord.AutocompleteContext):
-        return [item for item in self.loaded_menu_list if item.startswith(ctx.value.lower())]
+        return [item for item in self.loaded_menu_list if item.lower().startswith(ctx.value.lower())]
         
     @commands.Cog.listener()
     async def on_ready(self):

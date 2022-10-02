@@ -35,12 +35,12 @@ class Serve(commands.Cog):
         self.loaded_menu_list = [x for x, y in menu.items()]
 
     async def item_searcher(self, ctx: discord.AutocompleteContext):
-        return [item for item in self.loaded_menu_list if item.startswith(ctx.value.lower())]
+        return [item for item in self.loaded_menu_list if item.lower().startswith(ctx.value.lower())]
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
-        
+
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.slash_command(
         name='serve',
@@ -59,14 +59,14 @@ class Serve(commands.Cog):
         await ctx.defer()
 
         for key, val in menu.items():
-            if dish.lower() not in [key, val[0]]:
+            if dish.lower() not in [key.lower(), val[0]]:
                 continue
-            if not check_for_dish(ctx.author.id, val[0]):
+            if not check_for_dish(ctx.author.id, key):
                 return await ctx.respond(
                     "You don't have that dish ready."
                 )
 
-            dish_amt = int(dish_count(ctx.author.id, val[0]))
+            dish_amt = int(dish_count(ctx.author.id, key))
             if dish_amt == 0:
                 return await ctx.respond(
                     "You don't have that dish ready; cook it."
@@ -79,7 +79,7 @@ class Serve(commands.Cog):
             )
 
             await update_l(ctx.author.id, int(amount*(random.randint(1, 3))))
-            remove_dish(ctx.author.id, val[0], amount)
+            remove_dish(ctx.author.id, key, amount)
             update_data(ctx.author.id, 'cash', amount*val[6])
 
             success_embed = discord.Embed(

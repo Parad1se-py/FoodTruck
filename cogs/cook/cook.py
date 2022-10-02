@@ -36,7 +36,7 @@ class Cook(commands.Cog):
         self.loaded_menu_list = [x for x, y in menu.items()]
 
     async def item_searcher(self, ctx: discord.AutocompleteContext):
-        return [item for item in self.loaded_menu_list if item.startswith(ctx.value.lower())]
+        return [item for item in self.loaded_menu_list if item.lower().startswith(ctx.value.lower())]
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -73,19 +73,19 @@ class Cook(commands.Cog):
                 for ingredient in user_data['inv']:
                     remove_item(ctx.author.id, ingredient, amount)
 
-                add_active(ctx.author, dish, amount)
+                add_active(ctx.author, dish, amount*value[2])
                 msg = await ctx.respond(f"Your dish is being prepared! Come back {convert_to_unix_time(datetime.datetime.now(), seconds=value[5])}.")
                 await asyncio.sleep(value[5])
-                remove_active(ctx.author.id, dish)
+                remove_active(ctx.author.id, dish, amount*value[2])
                 add_dish(ctx.author, dish, amount*value[2])
                 await update_l(ctx.author.id, amount*(random.randint(1, 3)))
 
                 await msg.edit(f"`{amount*value[2]}`x **{key}** has been prepared!")
-                
+
                 try:
                     return await ctx.author.send(f"`{amount*value[2]}`x **{key}** has been prepared!")
-                except Exception:
-                    return
+                except Exception as e:
+                    raise e
 
         return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
