@@ -42,5 +42,17 @@ ing_shop = {
 
     'Seasoning': ['seasoning', 5, '<:seasoning:1025816165773221888>', 'https://media.discordapp.net/attachments/1015861699162689576/1025816237990744074/seasoning.png?width=671&height=671'],
 
-    'Toppings': ['toppings', 15, '<:topping:1025814758621978664>', 'https://media.discordapp.net/attachments/1015861699162689576/1025814832609497118/PngItem_1816873.png?width=671&height=671']
+    'Toppings': ['toppings', 15, '<:topping:1025814758621978664>', 'https://media.discordapp.net/attachments/1015861699162689576/1025814832609497118/PngItem_1816873.png?width=671&height=671'],
+
+    'Potato': ['potato', 30, '<:potato_ft:1026066817103433768>', 'https://media.discordapp.net/attachments/897763276421759016/1026068079853182977/potato_ft.png?width=805&height=671'],
+
+    'Cooking Oil': ['cooking-oil', 15, '<:oil_ft:1026068445319675935>', 'https://media.discordapp.net/attachments/897763276421759016/1026068514794123415/oil_ft.png'],
+
+    'Bun': ['bun', 30, '<:bun_ft:1026072020405977139>', 'https://media.discordapp.net/attachments/897763276421759016/1026072065515733023/bun_ft.png'],
+
+    'Patty': ['patty', 50, '<:patty_ft:1026072265177190440>', 'https://media.discordapp.net/attachments/897763276421759016/1026072324732112946/patty_ft.png'],
+
+    'Steak': ['steak', 25, '<:steak_ft:1026071146178822206>', 'https://media.discordapp.net/attachments/897763276421759016/1026071307953127434/steak_Ft.png?width=671&height=671'],
+
+    'Corn': ['corn', 15, '<:corn_ft:1026073503012753458>', 'https://media.discordapp.net/attachments/897763276421759016/1026074190178156634/corn_ft.png']
 }
