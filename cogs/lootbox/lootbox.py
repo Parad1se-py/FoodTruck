@@ -23,7 +23,7 @@ import asyncio
 
 import discord
 from discord.ext import commands
-from discord.commands import Option
+from discord.commands import Option, option
 
 from utils import *
 from data import *
@@ -32,10 +32,14 @@ from data import *
 class Lootbox(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        
+        self.loaded_lootboxes_list = [x for x, y in lootboxes.items()]
+
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
+
+    async def lootbox_searcher(self, ctx: discord.AutocompleteContext):
+        return [lootbox for lootbox in self.loaded_lootboxes_list if lootbox.startswith(ctx.value.lower())]
         
     lootbox_slash_group = discord.SlashCommandGroup('lootbox', description='All commands related to FoodTruck lootboxes!')
         
@@ -69,7 +73,7 @@ class Lootbox(commands.Cog):
     )
     async def lootbox_info(self,
                            ctx: discord.ApplicationContext,
-                           lootbox: Option(str, required=True)):
+                           lootbox: Option(str, description='Pick a lootbox to view it\'s details.', autocomplete=lootbox_searcher)):
         await ctx.defer()
 
         for key, value in lootboxes.items():
@@ -94,9 +98,10 @@ class Lootbox(commands.Cog):
     )
     async def lootbox_open(self,
                            ctx: discord.ApplicationContext,
-                           name: Option(str, required=True),
+                           name: Option(str, description='Pick a lootbox to open.', autocomplete=lootbox_searcher),
                            amount: Option(int, required=False)=1):
         await ctx.defer()
+
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have a FoodTruck account yet! To get started, use `/daily`!")
         
@@ -171,9 +176,9 @@ class Lootbox(commands.Cog):
     )
     async def buy_lootbox(self,
                           ctx: discord.ApplicationContext,
-                          name: Option(str, required=True),
+                          name: Option(str, description='Pick a lootbox to buy.', autocomplete=lootbox_searcher),
                           amount: Option(int, required=False)=1):
-        
+
         await ctx.defer()
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have a FoodTruck account yet! To get started, use `/daily`!")
