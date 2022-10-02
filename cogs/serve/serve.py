@@ -59,7 +59,7 @@ class Serve(commands.Cog):
         await ctx.defer()
 
         for key, val in menu.items():
-            if dish.lower() not in [key.lower(), val[0]]:
+            if dish.lower() != key.lower():
                 continue
             if not check_for_dish(ctx.author.id, key):
                 return await ctx.respond(
@@ -84,7 +84,7 @@ class Serve(commands.Cog):
 
             success_embed = discord.Embed(
                 title=f"{key} served!",
-                description=f"You served `{amount*val[2]}x` {key} for `${amount*val[6]}`!",
+                description=f"You served `{amount}x` {key} for `${amount*val[6]}`!",
                 color=discord.Colour.teal()
             )
 

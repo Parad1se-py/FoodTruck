@@ -77,7 +77,7 @@ class Lootbox(commands.Cog):
         await ctx.defer()
 
         for key, value in lootboxes.items():
-            if lootbox.lower() in [key.lower, value[0]]:
+            if lootbox.lower() == key.lower:
                 possible_items = ', '.join(value[2])
                 embed = discord.Embed(
                     title=f'{value[3]} {key}',
@@ -106,10 +106,10 @@ class Lootbox(commands.Cog):
             return await ctx.respond("You don't have a FoodTruck account yet! To get started, use `/daily`!")
         
         for key, value in lootboxes.items():
-            if name.lower() in [key.lower(), value[0]]:
-                if not check_for_lootbox(ctx.author.id, value[0]):
+            if name.lower() == key.lower():
+                if not check_for_lootbox(ctx.author.id, key):
                     return await ctx.respond("You don't own that lootbox! Use `/inventory` to view lootboxes owned by you.")
-                count = lootbox_count(ctx.author.id, value[0])
+                count = lootbox_count(ctx.author.id, key)
                 if count < amount:
                     return await ctx.respond(f"You only have `{count}` {key} lootbox(es).")
                 
@@ -121,7 +121,7 @@ class Lootbox(commands.Cog):
                 msg = await ctx.respond(embed=initial_embed)
                 await asyncio.sleep(1.5)
 
-                remove_lootboxes(ctx.author.id, value[0], amount)
+                remove_lootboxes(ctx.author.id, key, amount)
                 
                 final_embed = discord.Embed(
                     title=f'{ctx.author.name}\'s {key} lootbox rewards...',
@@ -184,7 +184,7 @@ class Lootbox(commands.Cog):
             return await ctx.respond("You don't have a FoodTruck account yet! To get started, use `/daily`!")
         
         for key, value in lootboxes.items():
-            if name.lower() in [key.lower(), value[0]]:
+            if name.lower() == key.lower():
                 user_cash = get_user_data(ctx.author.id)['cash']
                 
                 if value[1]*amount > user_cash:
