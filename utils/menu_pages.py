@@ -20,43 +20,28 @@
 # SOFTWARE.
 
 import discord
-from discord.ext import commands, pages
-from discord.commands import Option
 
-from utils import *
 from data import *
 
-class Menu(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.pages = get_menu_embed_pages()
 
-    def get_pages(self):
-        return self.pages
-        
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print(f"{self.__class__.__name__} Cog has been loaded")
-        
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    @commands.slash_command(
-        name='menu',
-        description='View the menu!',
-        usage='/menu'
+def get_page(x, y) -> discord.Embed:
+    embed = discord.Embed(
+        title='Menu',
+        description='You can cook these items using the cook command if you have achieved the required level: `/cook <item> [amount]`',
+        color=discord.Colour.teal()
     )
-    async def menu(self, ctx:discord.ApplicationContext):
-        await ctx.defer()
 
-        paginator = pages.Paginator(
-            pages = self.get_pages(),
-            show_disabled=True,
-            show_indicator=True,
-            use_default_buttons=True,
-            loop_pages=True,
-            disable_on_timeout=True,
-            timeout=15
-        )
-        await paginator.respond(ctx.interaction, ephemeral=False)
+    for i, (key, value) in enumerate(menu.items(), start=1):
+        if i >= x:
+            if i > y:
+                return embed
+            embed.add_field(
+                name=f"{value[3]} {key} | Id: `{value[0]}`",
+                value=f"`${value[6]}` | Makes `{value[2]}` | Level required: __`{value[4]}`__\n"\
+                       f"**{', '.join(value[1])}**",
+                inline=False
+            )
+    return embed
 
-def setup(bot:commands.Bot):
-    bot.add_cog(Menu(bot))
+def get_menu_embed_pages() -> list:
+    return [get_page(1, 6), get_page(7, 12)]
