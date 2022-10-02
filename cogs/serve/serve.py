@@ -32,6 +32,10 @@ from data import *
 class Serve(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.loaded_menu_list = [x for x, y in menu.items()]
+
+    async def item_searcher(self, ctx: discord.AutocompleteContext):
+        return [item for item in self.loaded_menu_list if item.startswith(ctx.value.lower())]
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -46,7 +50,7 @@ class Serve(commands.Cog):
     async def serve(
         self,
         ctx: discord.ApplicationContext,
-        dish: Option(str, description='ID/Name of the dish being served', required=True),
+        dish: Option(str, description='ID/Name of the dish being served', required=True, autocomplete=item_searcher),
         amount: Option(str, description='Amount of the dish that you want to serve', required=False)=1
     ):
         if not check_acc(ctx.author.id):
@@ -87,7 +91,7 @@ class Serve(commands.Cog):
             return await ctx.respond(embed=success_embed)
 
         return await ctx.respond(
-                            f"The dish {dish} was not found!"
+            f"The dish {dish} was not found!"
         )
 
 def setup(bot:commands.Bot):

@@ -23,7 +23,7 @@ import asyncio
 
 import discord
 from discord.ext import commands
-from discord.commands import Option, option
+from discord.commands import Option
 
 from utils import *
 from data import *
@@ -34,12 +34,12 @@ class Lootbox(commands.Cog):
         self.bot = bot
         self.loaded_lootboxes_list = [x for x, y in lootboxes.items()]
 
+    async def lootbox_searcher(self, ctx: discord.AutocompleteContext):
+        return [lootbox for lootbox in self.loaded_lootboxes_list if lootbox.startswith(ctx.value.lower())]
+
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
-
-    async def lootbox_searcher(self, ctx: discord.AutocompleteContext):
-        return [lootbox for lootbox in self.loaded_lootboxes_list if lootbox.startswith(ctx.value.lower())]
         
     lootbox_slash_group = discord.SlashCommandGroup('lootbox', description='All commands related to FoodTruck lootboxes!')
         

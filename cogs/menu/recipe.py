@@ -29,6 +29,10 @@ from data import *
 class Recipe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.loaded_menu_list = [x for x, y in menu.items()]
+
+    async def item_searcher(self, ctx: discord.AutocompleteContext):
+        return [item for item in self.loaded_menu_list if item.startswith(ctx.value.lower())]
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -43,7 +47,7 @@ class Recipe(commands.Cog):
     async def recipe(
         self,
         ctx: discord.ApplicationContext,
-        dish: Option(str, description='The ID/name of the dish you want to fetch the recipe of.')
+        dish: Option(str, description='The ID/name of the dish you want to fetch the recipe of.', autocomplete=item_searcher)
     ):
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have an account as you haven't played yet! Start with `/daily`!")

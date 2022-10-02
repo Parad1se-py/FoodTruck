@@ -30,6 +30,10 @@ class Ingredients_Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.pages = get_shop_embed_pages()
+        self.loaded_ingredient_list = [x for x, y in ing_shop.items()]
+
+    async def item_searcher(self, ctx: discord.AutocompleteContext):
+        return [item for item in self.loaded_ingredient_list if item.startswith(ctx.value.lower())]
 
     def get_pages(self):
         return self.pages
@@ -66,7 +70,7 @@ class Ingredients_Shop(commands.Cog):
     )
     async def buy(self,
                   ctx: discord.ApplicationContext,
-                  item: Option(str, required=True),
+                  item: Option(str, required=True, autocomplete=item_searcher),
                   amount: Option(int, requried=False)=1):
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")

@@ -33,6 +33,10 @@ from data import *
 class Cook(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.loaded_menu_list = [x for x, y in menu.items()]
+
+    async def item_searcher(self, ctx: discord.AutocompleteContext):
+        return [item for item in self.loaded_menu_list if item.startswith(ctx.value.lower())]
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -46,7 +50,7 @@ class Cook(commands.Cog):
     )
     async def cook(self,
                    ctx: discord.ApplicationContext,
-                   dish: Option(str, required=True),
+                   dish: Option(str, required=True, autocomplete=item_searcher),
                    amount: Option(int, required=False)=1):
         await ctx.defer()
         if not check_acc(ctx.author.id):
