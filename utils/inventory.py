@@ -42,7 +42,7 @@ def get_ing_embed(id):
         for key, value in ing_shop.items():
             if x.lower() == key.lower():
                 embed.add_field(
-                    name=f'{value[2]} {key} - {x[1]}',
+                    name=f'{value[2]} {key} - `x{y}`',
                     value=f'Id: `{value[0]}`',
                     inline=False
                 )

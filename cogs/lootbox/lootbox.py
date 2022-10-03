@@ -35,7 +35,7 @@ class Lootbox(commands.Cog):
         self.loaded_lootboxes_list = [x for x, y in lootboxes.items()]
 
     async def lootbox_searcher(self, ctx: discord.AutocompleteContext):
-        return [lootbox for lootbox in self.loaded_lootboxes_list if lootbox.lower().startswith(ctx.value.lower())]
+        return [lootbox for lootbox in self.loaded_lootboxes_list if lootbox.lower().startswith(ctx.value.lower()) or lootbox.lower() == ctx.value.lower()]
 
     @commands.Cog.listener()
     async def on_ready(self):

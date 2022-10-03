@@ -33,7 +33,7 @@ class Ingredients_Shop(commands.Cog):
         self.loaded_ingredient_list = [x for x, y in ing_shop.items()]
 
     async def item_searcher(self, ctx: discord.AutocompleteContext):
-        return [item for item in self.loaded_ingredient_list if item.startswith(ctx.value.lower())]
+        return [item for item in self.loaded_ingredient_list if item.startswith(ctx.value.lower()) or item.lower() == ctx.value.lower()]
 
     def get_pages(self):
         return self.pages
