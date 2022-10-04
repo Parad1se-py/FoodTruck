@@ -31,7 +31,7 @@ def get_page(x, y) -> discord.Embed:
         color=discord.Colour.teal()
     )
 
-    for i, (key, value) in enumerate(menu.items(), start=1):
+    for i, (key, value) in enumerate(stocks.items(), start=1):
         if i >= x:
             if i > y:
                 return embed
