@@ -19,7 +19,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import asyncio
 import random
 
 import discord
@@ -39,18 +38,18 @@ async def stock_updater():
         if j['bought'] >= 4:
             x = random.randint(100, 250)
             new_price = x * j['bought']
-            update_stockup_count(j['name'], -1 * j['bought'])
-            set_stockup_count(j['name'], 0)
-            update_stock_price(j['name'], new_price)
-            update_stock_type(j['name'], '🔼')
-            update_stock_count(j['name'], random.randint(1, 5))
+            update_stockup_count(i, -1 * j['bought'])
+            set_stockup_count(i, 0)
+            update_stock_price(i, new_price)
+            update_stock_type(i, '🔼')
+            update_stock_count(i, random.randint(1, 5))
         elif j['bought'] < 3:
             new_price = 50 * j['bought']
-            update_stockup_count(j['name'], -1 * j['bought'])
-            set_stockup_count(j['name'], 0)
-            update_stock_price(j['name'], -1 * new_price)
-            update_stock_type(j['name'], '🔽')
-            update_stock_count(j['name'], random.randint(1, 3))
+            update_stockup_count(i, -1 * j['bought'])
+            set_stockup_count(i, 0)
+            update_stock_price(i, -1 * new_price)
+            update_stock_type(i, '🔽')
+            update_stock_count(i, random.randint(1, 3))
 
 
 class Stocks(commands.Cog):
@@ -70,7 +69,6 @@ class Stocks(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
-        await asyncio.sleep(3600)
         stock_updater.start()
 
     stocks_slash_group = discord.SlashCommandGroup(name='stocks', description='All commands related to FoodTruck Stocks!')

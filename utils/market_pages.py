@@ -36,9 +36,8 @@ def get_page(x, y) -> discord.Embed:
             if i > y:
                 return embed
             embed.add_field(
-                name=f"{value[3]} {key} | Id: `{value[0]}`",
-                value=f"`${value[6]}` | Makes `{value[2]}` | Level required: __`{value[4]}`__\n"\
-                       f"**{', '.join(value[1])}**",
+                name=f"{value['name']} | Id: `{key}` {value['type']}",
+                value=f"`${value['price']}` | Stocks left: `{value['amt']}`",
                 inline=False
             )
     return embed
