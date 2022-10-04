@@ -43,6 +43,8 @@ class Daily(commands.Cog):
     )
     @commands.cooldown(1, 86400, commands.BucketType.user)
     async def daily(self, ctx: discord.ApplicationContext):
+        await ctx.defer()
+
         if not check_acc(ctx.author.id):
             register(ctx.author)
         

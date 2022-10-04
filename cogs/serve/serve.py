@@ -53,10 +53,10 @@ class Serve(commands.Cog):
         dish: Option(str, description='ID/Name of the dish being served', required=True, autocomplete=item_searcher),
         amount: Option(str, description='Amount of the dish that you want to serve', required=False)=1
     ):
+        await ctx.defer()
+
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have an account as you haven't played yet! Start with `/daily`!")
-
-        await ctx.defer()
 
         for key, val in menu.items():
             if dish.lower() != key.lower():

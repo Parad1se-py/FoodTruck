@@ -24,6 +24,7 @@ import random
 import discord
 from discord.commands import Option
 from discord.ext import commands, pages, tasks
+from discord.utils import basic_autocomplete
 
 from data import *
 from utils import *
@@ -83,9 +84,10 @@ class Stocks(commands.Cog):
                          ctx: discord.ApplicationContext,
                          item: Option(str, required=True, autocomplete=stocks_searcher),
                          amount: Option(int, required=False)):
+        await ctx.defer()
+
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
-        await ctx.defer()
 
         udata = get_user_data(ctx.author.id)
         if udata['cash'] < int(amount) * get_stock_data(item)['price']:
@@ -99,8 +101,8 @@ class Stocks(commands.Cog):
                 if j['amt'] == 0:
                     return await ctx.respond(f"There aren't any shares for {i} available, check back later.")
 
-                update_l(ctx.author.id, 5)
-                update_data(ctx.author, 'cash', -1* (int(amount) * get_stock_data(item)['price']))
+                await update_l(ctx.author.id, 5)
+                update_data(ctx.author.id, 'cash', -1* (int(amount) * get_stock_data(item)['price']))
                 add_stock(ctx.author, str(item.lower()), int(amount))
                 update_stock_count(item, -1 * int(amount))
                 update_stockup_count(item, int(amount))
@@ -116,13 +118,13 @@ class Stocks(commands.Cog):
                          ctx: discord.ApplicationContext,
                          item: Option(str, required=True, autocomplete=stocks_searcher),
                          amount: Option(int, required=False)):
+        await ctx.defer()
+
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
         if amount <= 0:
             return await ctx.reply(f"You can't sell less than 1 share, {ctx.author.name}!")
-
-        await ctx.defer()
 
         if not check_for_stock(ctx.author.id, item):
             return await ctx.reply(f"You don't have any shares of that stock, {ctx.author.name}!")
@@ -132,10 +134,10 @@ class Stocks(commands.Cog):
 
         for i, j in stocks.item():
             if i == item:
-                update_l(ctx.author.id, 10)
+                await update_l(ctx.author.id, 5)
                 add_stock(ctx.author, item, -amount)
                 update_stock_count(item, amount)
-                update_data(ctx.author, 'wallet', amount * get_stock_data(item)['price'])
+                update_data(ctx.author.id, 'cash', amount * get_stock_data(item)['price'])
                 return await ctx.reply(f"You have sold `{amount}` shares of `{item}`.")
 
     @commands.cooldown(1, 5, commands.BucketType.user)

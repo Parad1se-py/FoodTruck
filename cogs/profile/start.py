@@ -39,6 +39,7 @@ class Start(commands.Cog):
         usage='/start'
     )
     async def start(self, ctx:discord.ApplicationContext):
+        await ctx.defer()
         if not check_acc(ctx.author.id):
             register(ctx.author)
             embed = discord.Embed(

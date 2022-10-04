@@ -45,6 +45,7 @@ class Slots(commands.Cog):
     async def slots(self,
                     ctx: discord.ApplicationContext,
                     bet: Option(int, 'Money to gamble', required=True)):
+        await ctx.defer()
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
         

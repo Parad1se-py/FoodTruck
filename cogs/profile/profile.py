@@ -43,6 +43,8 @@ class Profile(commands.Cog):
     async def profile(self,
                       ctx: discord.ApplicationContext,
                       member : Option(discord.Member, required=False)=None):
+        await ctx.defer()
+
         if not member:
             member = ctx.author
         if not check_acc(member.id):
@@ -86,6 +88,8 @@ class Profile(commands.Cog):
     async def bal(self,
                       ctx: discord.ApplicationContext,
                       member : Option(discord.Member, required=False)=None):
+        await ctx.defer()
+
         if not member:
             member = ctx.author
         if not check_acc(member.id):

@@ -72,6 +72,8 @@ class Ingredients_Shop(commands.Cog):
                   ctx: discord.ApplicationContext,
                   item: Option(str, required=True, autocomplete=item_searcher),
                   amount: Option(int, requried=False)=1):
+        await ctx.defer()
+
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 

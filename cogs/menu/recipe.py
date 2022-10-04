@@ -49,10 +49,9 @@ class Recipe(commands.Cog):
         ctx: discord.ApplicationContext,
         dish: Option(str, description='The ID/name of the dish you want to fetch the recipe of.', autocomplete=item_searcher)
     ):
+        await ctx.defer()
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have an account as you haven't played yet! Start with `/daily`!")
-        
-        await ctx.defer()
         
         for key, value in menu.items():
             if dish.lower() in [key.lower(), value[0]]:
