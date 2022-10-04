@@ -87,7 +87,7 @@ class Stocks(commands.Cog):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
         await ctx.defer()
 
-        udata = get_user_data(ctx.author)
+        udata = get_user_data(ctx.author.id)
         if udata['cash'] < int(amount) * get_stock_data(item)['price']:
             return await ctx.respond("You don't have enough money to buy those many shares.")
 
@@ -124,7 +124,7 @@ class Stocks(commands.Cog):
 
         await ctx.defer()
 
-        if not check_for_stock(ctx.author, item):
+        if not check_for_stock(ctx.author.id, item):
             return await ctx.reply(f"You don't have any shares of that stock, {ctx.author.name}!")
 
         if stock_count(ctx.author, item) < amount:
