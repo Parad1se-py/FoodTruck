@@ -52,10 +52,9 @@ class Profile(commands.Cog):
         badges = ' '.join(data['badges'])
 
         level = data['level']
-        level_l = level*10 - data['exp']
 
         profile_embed = discord.Embed(
-            title=f"{ctx.author.name}'s profile",
+            title=f"{member.name}'s profile",
             description=badges,
             color=discord.Colour.gold()
         )
@@ -69,7 +68,7 @@ class Profile(commands.Cog):
             value=f"`{data['exp']}`/`{level*10}`",
             inline=False
         )
-        profile_embed.set_thumbnail(url=ctx.author.avatar.url)
+        profile_embed.set_thumbnail(url=member.avatar.url)
 
         return await ctx.respond(embed=profile_embed)
     

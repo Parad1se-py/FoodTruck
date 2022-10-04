@@ -63,6 +63,7 @@ class Inventory(commands.Cog):
                             discord.SelectOption(label="Ingredients", description="View your ingredients", emoji="🧂"),
                             discord.SelectOption(label="Cooking", description="View dishes being currently cooked", emoji="🍳"),
                             discord.SelectOption(label="Ready", description="View dishes that are prepared", emoji="🍰"),
+                            discord.SelectOption(label="Stocks", description="View the stocks you own", emoji="💹"),
                             discord.SelectOption(label="Lootboxes", description="View lootboxes you have", emoji="📦"),
                             discord.SelectOption(label="Cancel", description="Exit", emoji="❌"),
                         ],
@@ -88,6 +89,9 @@ class Inventory(commands.Cog):
                 elif select.values[0] == 'Lootboxes':
                     await interaction.response.send_message(embed=get_lootboxes_embed(ctx.author.id))
 
+                elif select.values[0] == 'Stocks':
+                    await interaction.response.send_message(embed=get_stocks_embed(ctx.author.id))
+
         view = DropdownView(self.bot)
 
         embed = discord.Embed(
@@ -97,6 +101,5 @@ class Inventory(commands.Cog):
         )
         msg = await ctx.respond(embed=embed, view=view)
 
-   
 def setup(bot:commands.Bot):
     bot.add_cog(Inventory(bot))

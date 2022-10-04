@@ -19,12 +19,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .db import *
-from .time_conv import *
-from .inventory import *
-from .lootbox_calc import *
-from .help_pages import *
-from .shop_pages import *
-from .menu_pages import *
-from .stocks_db import *
-from .market_pages import *
+import discord
+
+from data import *
+
+
+def get_page(x, y) -> discord.Embed:
+    embed = discord.Embed(
+        title='Menu',
+        description='You can cook these items using the cook command if you have achieved the required level: `/cook <item> [amount]`',
+        color=discord.Colour.teal()
+    )
+
+    for i, (key, value) in enumerate(menu.items(), start=1):
+        if i >= x:
+            if i > y:
+                return embed
+            embed.add_field(
+                name=f"{value[3]} {key} | Id: `{value[0]}`",
+                value=f"`${value[6]}` | Makes `{value[2]}` | Level required: __`{value[4]}`__\n"\
+                       f"**{', '.join(value[1])}**",
+                inline=False
+            )
+    return embed
+
+def get_market_embed_pages() -> list:
+    return [get_page(1, 6), get_page(7, 12)]

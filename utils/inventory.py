@@ -117,3 +117,28 @@ def get_lootboxes_embed(id):
                 )
 
     return embed
+
+def get_stocks_embed(id):
+    embed = discord.Embed(
+        title='Stocks List',
+        color=discord.Colour.teal()
+    )
+
+    user_stocks = get_user_data(id)['stocks'].items()
+    
+    if len(stocks) <= 0:
+        embed.description = 'You don\'t have any lootboxes in your inventory.'
+    else:
+        embed.description = 'These are your ready-to-loot looboxes: '
+
+    for x, y in user_stocks:
+        for key, value in stocks.items():
+            if x.lower() == key.lower():
+                name = value['name']
+                type_ = value['type']
+                embed.add_field(
+                    name=f'{name} | `{key}` - `x{y}`',
+                    value=f'{type_}'
+                )
+
+    return embed
