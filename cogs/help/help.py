@@ -29,10 +29,6 @@ from utils.help_pages import get_help_embed_pages
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.pages = get_help_embed_pages()
-
-    def get_pages(self):
-        return self.pages
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -48,7 +44,7 @@ class Help(commands.Cog):
         await ctx.defer()
 
         paginator = pages.Paginator(
-            pages = self.get_pages(),
+            pages = get_help_embed_pages(),
             show_disabled=True,
             show_indicator=True,
             use_default_buttons=True,

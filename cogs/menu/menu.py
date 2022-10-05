@@ -29,11 +29,7 @@ from data import *
 class Menu(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.pages = get_menu_embed_pages()
 
-    def get_pages(self):
-        return self.pages
-        
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
@@ -48,7 +44,7 @@ class Menu(commands.Cog):
         await ctx.defer()
 
         paginator = pages.Paginator(
-            pages = self.get_pages(),
+            pages = get_menu_embed_pages(),
             show_disabled=True,
             show_indicator=True,
             use_default_buttons=True,

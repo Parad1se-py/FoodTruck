@@ -29,14 +29,10 @@ from data import *
 class Ingredients_Shop(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.pages = get_shop_embed_pages()
         self.loaded_ingredient_list = [x for x, y in ing_shop.items()]
 
     async def item_searcher(self, ctx: discord.AutocompleteContext):
         return [item for item in self.loaded_ingredient_list if item.startswith(ctx.value.lower()) or item.lower() == ctx.value.lower()]
-
-    def get_pages(self):
-        return self.pages
         
     @commands.Cog.listener()
     async def on_ready(self):
@@ -52,7 +48,7 @@ class Ingredients_Shop(commands.Cog):
         await ctx.defer()
 
         paginator = pages.Paginator(
-            pages = self.get_pages(),
+            pages = get_shop_embed_pages(),
             show_disabled=True,
             show_indicator=True,
             use_default_buttons=True,
