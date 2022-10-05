@@ -53,8 +53,6 @@ class Profile(commands.Cog):
         data = get_user_data(member.id)
         badges = ' '.join(data['badges'])
 
-        level = data['level']
-
         profile_embed = discord.Embed(
             title=f"{member.name}'s profile",
             description=badges,
@@ -66,8 +64,8 @@ class Profile(commands.Cog):
             inline=False
         )
         profile_embed.add_field(
-            name=f"Level {level} | XP:",
-            value=f"`{data['exp']}`/`{level*10}`",
+            name=f"Level {data['level']} | XP: {data['exp']}",
+            value=f"`{data['level_l']}`/`{data['level']*10}`",
             inline=False
         )
         profile_embed.set_thumbnail(url=member.avatar.url)

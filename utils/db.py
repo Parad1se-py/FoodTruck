@@ -34,7 +34,7 @@ collection = db["foodtruck"]
 
 def register(user):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "exp": 10, "badges":[], "lootboxes": {}, "stocks": {}}
+    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "level_l": 0, "exp": 10, "badges":[], "lootboxes": {}, "stocks": {}}
     collection.insert_one(post)
     return True
 
@@ -67,7 +67,7 @@ async def update_l(id:int, exp:int):
         exp -= lvl*10
         lvl += 1
 
-    collection.update_one({"_id": id}, {"$inc": {"level": lvl-udata["level"]}})
+    collection.update_one({"_id": id}, {"$inc": {"level": lvl-udata["level"], "level_l": exp}})
 
 def add_item(user, item, amount=1):
     collection.update_one(

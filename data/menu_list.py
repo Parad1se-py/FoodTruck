@@ -22,24 +22,24 @@
 
 # Item: [id, ingredients, servings, emoji, level, time, sell]
 menu = {
-    'Taco': ['taco', ('cheese', 'veg-fillings', 'taco-shells'), 10, '<:taco_ft:999343822809092187>', 1, 45, 100],
+    'Taco': ['taco', ('Cheese', 'Veg Fillings', 'Taco Shells'), 2, '<:taco_ft:999343822809092187>', 1, 45, 100],
 
-    'Quesadilla': ['quesadilla', ('cheese', 'veg-fillings', 'tortilla'), 5, '<:quesadilla:1000244798025912370>', 1, 60, 100],
+    'Quesadilla': ['quesadilla', ('Cheese', 'Veg Fillings', 'Tortilla'), 1, '<:quesadilla:1000244798025912370>', 1, 60, 100],
 
-    'Corn Dog': ['corn-dog', ('corn', 'sausage', 'cooking-oil'), 15, '<:corndog_ft:1026073515226578965>', 1, 30, 50],
+    'Corn Dog': ['corn-dog', ('Corn', 'Sausage', 'Cooking Oil'), 5, '<:corndog_ft:1026073515226578965>', 1, 30, 50],
 
-    'Burrito': ['burrito', ('cheese', 'veg-fillings', 'tortilla', 'rice-fillings'), 10, '<:burrito_ft:1000244781928157295>', 7, 60, 125],
+    'Burrito': ['burrito', ('Cheese', 'Veg Fillings', 'Tortilla', 'Rice Fillings'), 1, '<:burrito_ft:1000244781928157295>', 7, 60, 125],
 
-    'Hot Dog': ['hot-dog', ('long-bun', 'sausage', 'sauce'), 15, '<:hotdog_ft:1002183487312371752>', 7, 15, 50],
+    'Hot Dog': ['hot-dog', ('Long Bun', 'Sausage', 'Sauce'), 5, '<:hotdog_ft:1002183487312371752>', 7, 15, 50],
 
-    'Garlic Bread': ['garlic-bread', ('dough', 'cheese', 'seasoning'), 10, '<:garlic_bread:1025796734716219514>', 15, 90, 70],
+    'Garlic Bread': ['garlic-bread', ('Dough', 'Cheese', 'Seasoning'), 1, '<:garlic_bread:1025796734716219514>', 15, 90, 70],
 
-    'Pizza': ['pizza', ('dough', 'cheese', 'toppings', 'seasoning', 'sauce'), 5, '<:pizza_ft:1025797230269038592>', 15, 120, 100],
+    'Pizza': ['pizza', ('Dough', 'Cheese', 'Toppings', 'Seasoning', 'Sauce'), 1, '<:pizza_ft:1025797230269038592>', 15, 120, 100],
 
-    'Fries': ['fries', ('potato', 'cooking-oil', 'seasoning'), 10, '<:fries_ft:1026067814504726550>', 15, 90, 100],
+    'Fries': ['fries', ('Potato', 'Cooking Oil', 'Seasoning'), 3, '<:fries_ft:1026067814504726550>', 15, 90, 100],
 
-    'Burger': ['burger', ('bun', 'veg-fillings', 'sauce', 'patty', 'seasoning'), 5, '<:burger_ft:1026072498900574211>', 20, 100, 150],
+    'Burger': ['burger', ('Bun', 'Veg Fillings', 'Sauce', 'Patty', 'Seasoning', 'Cheese'), 1, '<:burger_ft:1026072498900574211>', 20, 100, 150],
 
-    'Hamburer': ['hamburger', ('bun', 'steak', 'sauce', 'patty', 'seasoning'), 7,
+    'Hamburger': ['hamburger', ('Bun', 'Steak', 'Sauce', 'Patty', 'Seasoning', 'Cheese'), 1,
     '<:hamburger_ft:1026070145199771719>', 25, 120, 175]
 }

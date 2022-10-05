@@ -59,18 +59,16 @@ class Cook(commands.Cog):
         user_data = get_user_data(ctx.author.id)
 
         for key, value in menu.items():
-            if key.lower() == dish.lower() or value[0].lower() == dish.lower():
+            if key == dish:
                 if user_data['level'] < value[4]:
-                    return await ctx.respond(f"You don't have the required level (`{value[4]}`) to cook this dish! Your current level is `{user_data['level_l']/10}`")
+                    return await ctx.respond(f"You don't have the required level (`{value[4]}`) to cook this dish! Your current level is `{user_data['level']}`")
 
-                for ingredient in user_data['inv']:
+                for ingredient in value[1]:
                     if not check_for_item(ctx.author.id, ingredient):
                         return await ctx.respond(f"You lack the ingredient `{ingredient}`! Buy it using `/buy {ingredient}`.")
                     count = item_count(ctx.author.id, ingredient)
                     if count < amount:
                         return await ctx.respond(f"You lack {amount}x `{ingredient}`! You currently have `{count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-count}`.")
-
-                for ingredient in user_data['inv']:
                     remove_item(ctx.author.id, ingredient, amount)
 
                 add_active(ctx.author, dish, amount*value[2])
