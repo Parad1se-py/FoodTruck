@@ -59,10 +59,6 @@ class Stocks(commands.Cog):
         self.profit = '🔼'
         self.loss = '🔽'
         self.loaded_stocks_list = [x for x, y in stocks.items()]
-        self.pages = get_market_embed_pages()
-
-    def get_pages(self):
-        return self.pages
 
     async def stocks_searcher(self, ctx: discord.AutocompleteContext):
         return [item for item in self.loaded_stocks_list if item.startswith(ctx.value.lower()) or item.lower() == ctx.value.lower()]
@@ -150,7 +146,7 @@ class Stocks(commands.Cog):
         await ctx.defer()
 
         paginator = pages.Paginator(
-            pages = self.get_pages(),
+            pages = get_market_embed_pages(),
             show_disabled=True,
             show_indicator=True,
             use_default_buttons=True,
