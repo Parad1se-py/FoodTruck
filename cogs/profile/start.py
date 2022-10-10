@@ -41,7 +41,7 @@ class Start(commands.Cog):
     async def start(self, ctx:discord.ApplicationContext):
         await ctx.defer()
         if not check_acc(ctx.author.id):
-            register(ctx.author)
+            register(ctx.author.id)
             embed = discord.Embed(
                 title='Registered successfully!',
                 description='I have added `$500` cash to start with, and `cheese`, `veg-fillings` & `taco-shell` to your kitchen as well!',

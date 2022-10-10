@@ -46,9 +46,9 @@ class Daily(commands.Cog):
         await ctx.defer()
 
         if not check_acc(ctx.author.id):
-            register(ctx.author)
+            register(ctx.author.id)
         
-        cash = random.randint(50, 550)
+        cash = random.randint(150, 550)
 
         update_data(ctx.author.id, 'cash', cash)
         await update_l(ctx.author.id, 5)

@@ -19,8 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .ing_shop_list import *
-from .menu_list import *
-from .lootbox_list import *
-from .stocks_list import *
-from .worker_list import *
+# Worker: [id, price, level]
+workers = {
+    'Whipper': ['Whipper', 15000, 20]
+}

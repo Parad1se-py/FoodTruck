@@ -32,9 +32,9 @@ cluster = MongoClient(f"mongodb+srv://{os.getenv('MONGO_USERNAME')}:{os.getenv('
 db = cluster["discord"]
 collection = db["foodtruck"]
 
-def register(user):
+def register(user_id:int):
     """Register a user."""
-    post = {"_id": int(user.id), "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "level_l": 0, "exp": 10, "badges":[], "lootboxes": {}, "stocks": {}}
+    post = {"_id": user_id, "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "level_l": 0, "exp": 10, "badges":[], "lootboxes": {}, "stocks": {}, "workers": {}}
     collection.insert_one(post)
     return True
 
@@ -187,4 +187,40 @@ def remove_lootboxes(id, item:str, amount:int=1):
         collection.update_one(
             {"_id": id},
             {"$inc": {f"lootboxes.{item}": -amount}}
+        )
+
+def check_for_workers(id:int, item:str):
+    d = collection.find_one({"_id": id})
+    try:
+        if d["workers"][item] >= 1:
+            return True
+    except Exception:
+        return False
+
+def workers_count(id:int, item:str):
+    if _ := check_for_workers(id, item):
+        x = collection.find_one({"_id": id})
+        return x['workers'][item]
+    else:
+        return 0
+
+def add_workers(id:int, name:str, amount:int):
+    collection.update_one(
+            {"_id": id},
+            {"$inc": {f"workers.{name}": amount}}
+    )
+
+def purge_workers(id:int, name:str, amount:int):
+    collection.update_one(
+        {"_id": id},
+        {"$unset": {f"workers.{name}": amount}}
+    )
+
+def remove_workers(id:int, name:str, amount:int=1):
+    if workers_count(id, name) == amount:
+        purge_workers(id, name, amount)
+    else:
+        collection.update_one(
+            {"_id": id},
+            {"$inc": {f"workers.{name}": -amount}}
         )
