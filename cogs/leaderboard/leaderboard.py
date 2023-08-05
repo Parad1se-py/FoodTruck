@@ -63,29 +63,26 @@ class Leaderboard(commands.Cog):
             else:
                 continue
             if i == 1:
-                user = await self.bot.get_or_fetch_user(x['_id'])
                 emb.add_field(
-                    name=f"🥇 **#{i}** - {user.name}",
+                    name=f"🥇 **#{i}** - {await self.bot.fetch_user(x['_id'])}",
                     value=f"`${cash}`",
                     inline=False
                 )
             elif i == 2:
-                user = await self.bot.get_or_fetch_user(x['_id'])
                 emb.add_field(
-                    name=f"🥈 **#{i}** - {user.name}",
+                    name=f"🥈 **#{i}** - {await self.bot.fetch_user(x['_id'])}",
                     value=f"`${cash}`",
                     inline=False
                 )
             elif i == 3:
-                user = await self.bot.get_or_fetch_user(x['_id'])
                 emb.add_field(
-                    name=f"🥉 **#{i}** - {user.name}",
+                    name=f"🥉 **#{i}** - {await self.bot.fetch_user(x['_id'])}",
                     value=f"`${cash}`",
                     inline=False
                 )
             else:
                 emb.add_field(
-                    name=f"**#{i}** {await self.bot.fetch_user(x['_id'])}",
+                    name=f"**#{i}** - {await self.bot.fetch_user(x['_id'])}",
                     value=f"`${cash}`",
                     inline=False
                 )

@@ -83,9 +83,10 @@ class Stocks(commands.Cog):
 
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
-
+        
         udata = get_user_data(ctx.author.id)
-        if udata['cash'] < int(amount) * get_stock_data(item)['price']:
+        stock_price = get_stock_data(item)['price']
+        if udata['cash'] < int(amount) * stock_price:
             return await ctx.respond("You don't have enough money to buy those many shares.")
 
         for i, j in stocks.items():
@@ -97,8 +98,8 @@ class Stocks(commands.Cog):
                     return await ctx.respond(f"There aren't any shares for {i} available, check back later.")
 
                 await update_l(ctx.author.id, 5)
-                update_data(ctx.author.id, 'cash', -1* (int(amount) * get_stock_data(item)['price']))
-                add_stock(ctx.author, str(item.lower()), int(amount))
+                update_data(ctx.author.id, 'cash', -1* (int(amount) * stock_price['price']))
+                add_stock(ctx.author, item, int(amount))
                 update_stock_count(item, -1 * int(amount))
                 update_stockup_count(item, int(amount))
                 return await ctx.respond(f"You have bought `{amount}` shares of `{item}`.")

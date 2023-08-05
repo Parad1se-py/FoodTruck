@@ -31,9 +31,9 @@ class Workers(commands.Cog):
         self.bot = bot
         self.loaded_worker_list = [x for x, y in workers.items()]
 
-    async def stocks_searcher(self, ctx: discord.AutocompleteContext):
+    async def worker_searcher(self, ctx: discord.AutocompleteContext):
         return [item for item in self.loaded_worker_list if item.startswith(ctx.value.lower()) or item.lower() == ctx.value.lower()]
-        
+
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
@@ -47,7 +47,7 @@ class Workers(commands.Cog):
     )
     async def worker_buy(self,
                          ctx: discord.ApplicationContext,
-                         name: Option(str, required=True, autocomplete=stocks_searcher),
+                         name: Option(str, required=True, autocomplete=worker_searcher),
                          amount: Option(int, required=False)=1):
         await ctx.defer()
 
@@ -74,7 +74,7 @@ class Workers(commands.Cog):
                     description=f'You successfully bought `{amount}`x {x} worker for `${amount*y[1]}`!',
                     color=discord.Colour.teal()
                 )
-                success_embed.set_footer(text='Thanks for your purchase! Happy cooking :)')
+                success_embed.set_footer(text='Thanks for your purchase! Happy cooking :) | https://discord.gg/VVfvtFV3qu')
 
                 return await ctx.respond(embed=success_embed)
 
@@ -85,7 +85,7 @@ class Workers(commands.Cog):
     )
     async def worker_buy(self,
                          ctx: discord.ApplicationContext,
-                         name: Option(str, required=True, autocomplete=stocks_searcher),
+                         name: Option(str, required=True, autocomplete=worker_searcher),
                          amount: Option(int, required=False)=1):
         await ctx.defer()
 
@@ -113,6 +113,19 @@ class Workers(commands.Cog):
                 success_embed.set_footer(text='https://discord.gg/VVfvtFV3qu')
 
                 return await ctx.respond(embed=success_embed)
+
+
+    @workers_slash_group.command(
+        name='start',
+        description='Start your worker machines to automatically cook food!',
+        usage='/worker start [recipe] <amount=1>'
+    )
+    async def worker_start(self,
+                           ctx: discord.ApplicationContext,
+                           name: Option(str, required=True, autocomplete=worker_searcher),
+                           amount: Option(int, required=False)=1
+                           ):
+        pass
 
 
 def setup(bot:commands.Bot):
