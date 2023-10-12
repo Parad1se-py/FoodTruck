@@ -83,7 +83,7 @@ class Workers(commands.Cog):
         description='Sell an owned worker bot',
         usage='/worker sell [id/name] <amount>'
     )
-    async def worker_buy(self,
+    async def worker_sell(self,
                          ctx: discord.ApplicationContext,
                          name: Option(str, required=True, autocomplete=worker_searcher),
                          amount: Option(int, required=False)=1):
@@ -94,7 +94,7 @@ class Workers(commands.Cog):
 
         for x, y in workers.items():
             if x == name:
-                if workers_count < amount:
+                if workers_count(ctx.author.id, x) < amount:
                     return await ctx.respond(f"You don't have those many {x} workers!")
 
                 if amount < 3:
@@ -125,7 +125,10 @@ class Workers(commands.Cog):
                            name: Option(str, required=True, autocomplete=worker_searcher),
                            amount: Option(int, required=False)=1
                            ):
-        pass
+        await ctx.defer()
+
+        if not check_acc(ctx.author.id):
+            return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
 
 def setup(bot:commands.Bot):

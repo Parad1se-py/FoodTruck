@@ -21,5 +21,6 @@
 
 # Worker: [id, price, level]
 workers = {
-    'Whipper': ['Whipper', 15000, 20]
+    'Whipper': ['Whipper', 17500, 15],
+    'Mixer': ['Mixer', 25000, 20]
 }
