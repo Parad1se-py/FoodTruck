@@ -76,6 +76,7 @@ class Cook(commands.Cog):
                 await asyncio.sleep(value[5])
                 remove_active(ctx.author.id, dish, amount*value[2])
                 add_dish(ctx.author, dish, amount*value[2])
+                inc_dishes_cooked(ctx.author.id, dish, amount*value[2])
                 await update_l(ctx.author.id, amount*(random.randint(1, 3)))
 
                 await msg.edit(f"`{amount*value[2]}`x **{key}** has been prepared!")

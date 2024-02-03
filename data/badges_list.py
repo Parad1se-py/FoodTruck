@@ -20,7 +20,8 @@
 # SOFTWARE.
 
 
-# Badge: [id, emoji, desc]
-Badges: {
-    'foodtruck-start-badge', '<:foodtruckstartbadge:1203275993553567795>', 'Congratulations on starting your FoodTruck journey! Good luck :D'
+# Badge: [name, emoji, desc]
+badges = {
+    'foodtruck-start-badge': ['FoodTruck Starting Badge', '<:foodtruckstartbadge:1203275993553567795>', 'Congratulations on starting your FoodTruck journey! Good luck :D'],
+    'first-dish-badge': ['First Dish Badge', '', 'Hats off on cooking your first badge! Keep going :D']
 }

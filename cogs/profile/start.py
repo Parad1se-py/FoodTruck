@@ -49,7 +49,7 @@ class Start(commands.Cog):
             )
             embed.add_field(
                 name='Cook your first item!:',
-                value='1. Buy cheese `/buy cheese`\n2.Cook a taco! `/cook taco`',
+                value='1. Buy cheese, veg-fillings and taco-shells `/buy <item>`\n2. Cook a taco! `/cook taco`',
                 inline=False
             )
             embed.add_field(

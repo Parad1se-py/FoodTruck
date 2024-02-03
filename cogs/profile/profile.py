@@ -24,6 +24,7 @@ from discord.ext import commands
 from discord.commands import Option
 
 from utils import *
+from data import badges
 
 
 class Profile(commands.Cog):
@@ -51,11 +52,16 @@ class Profile(commands.Cog):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
         data = get_user_data(member.id)
-        badges = ' '.join(data['badges'])
+
+        i = []
+        print(type(badges))
+        for x in data['badges']:
+            i.append(f'{badges[x][1]}')
+        badges_str = ' '.join(i)
 
         profile_embed = discord.Embed(
             title=f"{member.name}'s profile",
-            description=badges,
+            description=badges_str,
             color=discord.Colour.gold()
         )
         profile_embed.add_field(
