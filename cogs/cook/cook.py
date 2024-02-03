@@ -71,6 +71,9 @@ class Cook(commands.Cog):
                         return await ctx.respond(f"You lack {amount}x `{ingredient}`! You currently have `{count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-count}`.")
                     remove_item(ctx.author.id, ingredient, amount)
 
+                if bool(user_data['dishes_cooked']) == False:
+                    add_badge(ctx.author.id, 'first-dish-badge')
+
                 add_active(ctx.author, dish, amount*value[2])
                 msg = await ctx.respond(f"Your dish is being prepared! Come back {convert_to_unix_time(datetime.datetime.now(), seconds=value[5])}.")
                 await asyncio.sleep(value[5])

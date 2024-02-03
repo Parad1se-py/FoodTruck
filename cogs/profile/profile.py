@@ -53,11 +53,7 @@ class Profile(commands.Cog):
 
         data = get_user_data(member.id)
 
-        i = []
-        print(type(badges))
-        for x in data['badges']:
-            i.append(f'{badges[x][1]}')
-        badges_str = ' '.join(i)
+        badges_str = ' '.join([f'{badges[x][1]}' for x in data['badges']])
 
         profile_embed = discord.Embed(
             title=f"{member.name}'s profile",

@@ -44,12 +44,12 @@ class Start(commands.Cog):
             register(ctx.author.id)
             embed = discord.Embed(
                 title='Registered successfully!',
-                description='I have added `$500` cash to start with, and `cheese`, `veg-fillings` & `taco-shell` to your kitchen as well!',
+                description='I have added `$500` cash to start with!',
                 color=discord.Colour.teal()
             )
             embed.add_field(
                 name='Cook your first item!:',
-                value='1. Buy cheese, veg-fillings and taco-shells `/buy <item>`\n2. Cook a taco! `/cook taco`',
+                value='1. Buy **cheese**, **veg-fillings** and **taco-shells** `/buy <item>`\n2. Cook a taco! `/cook taco`',
                 inline=False
             )
             embed.add_field(
