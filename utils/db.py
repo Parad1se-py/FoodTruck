@@ -33,8 +33,9 @@ collection = db["foodtruck"]
 
 def register(user_id:int):
     """Register a user."""
-    post = {"_id": user_id, "cash": 500, "streak":0, "name": None, "inv": {'cheese': 1, 'veg-fillings': 1, 'taco-shell': 1}, "active":{}, "dishes":{}, "level": 1, "level_l": 0, "exp": 10, "badges":[], "lootboxes": {}, "stocks": {}, "workers": {}}
+    post = {"_id": user_id, "cash": 500, "streak":0, "name": None, "active":{}, "dishes":{}, "level": 1, "level_l": 0, "exp": 10, "badges":[], "lootboxes": {}, "stocks": {}, "workers": {}}
     collection.insert_one(post)
+    add_badge("foodtruck-start-badge")
     return True
 
 def check_acc(id):
@@ -223,3 +224,12 @@ def remove_workers(id:int, name:str, amount:int=1):
             {"_id": id},
             {"$inc": {f"workers.{name}": -amount}}
         )
+
+
+# badges
+def add_badge(id:int, badge_id:str):
+    """Add badges to someone's profile"""
+    collection.update_one(
+        {"_id": id},
+        {"$push": {"badges": badge_id}}
+    )

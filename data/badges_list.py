@@ -19,9 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .badges_list import *
-from .ing_shop_list import *
-from .menu_list import *
-from .lootbox_list import *
-from .stocks_list import *
-from .worker_list import *
+
+# Badge: [id, emoji, desc]
+Badges: {
+    'foodtruck-start-badge', '<:foodtruckstartbadge:1203275993553567795>', 'Congratulations on starting your FoodTruck journey! Good luck :D'
+}
