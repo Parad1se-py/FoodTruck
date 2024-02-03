@@ -23,5 +23,5 @@
 # Badge: [name, emoji, desc]
 badges = {
     'foodtruck-start-badge': ['FoodTruck Starting Badge', '<:foodtruckstartbadge:1203275993553567795>', 'Congratulations on starting your FoodTruck journey! Good luck :D'],
-    'first-dish-badge': ['First Dish Badge', '', 'Hats off on cooking your first badge! Keep going :D']
+    'first-dish-badge': ['First Dish Badge', '<:firstdishbadge:1203342015945900092>', 'Hats off on cooking your first badge! Keep going :D']
 }
