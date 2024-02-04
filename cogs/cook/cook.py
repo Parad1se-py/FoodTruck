@@ -18,7 +18,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 import asyncio
+import contextlib
 import datetime
 import random
 
@@ -57,37 +59,37 @@ class Cook(commands.Cog):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
 
         user_data = get_user_data(ctx.author.id)
+        dish_menu_data = menu[dish]
 
-        for key, value in menu.items():
-            if key == dish:
-                if user_data['level'] < value[4]:
-                    return await ctx.respond(f"You don't have the required level (`{value[4]}`) to cook this dish! Your current level is `{user_data['level']}`")
+        if user_data['level'] < dish_menu_data[4]:
+            return await ctx.respond(f"You don't have the required level (`{dish_menu_data[4]}`) to cook this dish! Your current level is `{user_data['level']}`")
 
-                for ingredient in value[1]:
-                    if not check_for_item(ctx.author.id, ingredient):
-                        return await ctx.respond(f"You lack the ingredient `{ingredient}`! Buy it using `/buy {ingredient}`.")
-                    count = item_count(ctx.author.id, ingredient)
-                    if count < amount:
-                        return await ctx.respond(f"You lack {amount}x `{ingredient}`! You currently have `{count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-count}`.")
-                    remove_item(ctx.author.id, ingredient, amount)
+        for ingredient in dish_menu_data[1]:
+            if not check_for_item(ctx.author.id, ingredient):
+                return await ctx.respond(f"You lack the ingredient `{ingredient}`! Buy it using `/buy {ingredient}`.")
+            count = user_data['inv'][ingredient]
+            if count < amount:
+                return await ctx.respond(f"You lack {amount}x `{ingredient}`! You currently have `{count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-count}`.")
 
-                if bool(user_data['dishes_cooked']) == False:
-                    add_badge(ctx.author.id, 'first-dish-badge')
+            remove_item(ctx.author.id, ingredient, amount)
 
-                add_active(ctx.author, dish, amount*value[2])
-                msg = await ctx.respond(f"Your dish is being prepared! Come back {convert_to_unix_time(datetime.datetime.now(), seconds=value[5])}.")
-                await asyncio.sleep(value[5])
-                remove_active(ctx.author.id, dish, amount*value[2])
-                add_dish(ctx.author, dish, amount*value[2])
-                inc_dishes_cooked(ctx.author.id, dish, amount*value[2])
-                await update_l(ctx.author.id, amount*(random.randint(1, 3)))
+        if not bool(user_data['dishes_cooked']):
+            add_badge(ctx.author.id, 'first-dish-badge')
 
-                await msg.edit(f"`{amount*value[2]}`x **{key}** has been prepared!")
+        quantity = dish_menu_data[2]
 
-                try:
-                    return await ctx.author.send(f"`{amount*value[2]}`x **{key}** has been prepared!")
-                except Exception as e:
-                    raise e
+        add_active(ctx.author, dish, amount*quantity)
+        msg = await ctx.respond(f"Your dish is being prepared! Come back {convert_to_unix_time(datetime.datetime.now(), seconds=dish_menu_data[5])}.")
+        await asyncio.sleep(dish_menu_data[5])
+        remove_active(ctx.author.id, dish, amount*quantity)
+        add_dish(ctx.author, dish, amount*quantity)
+        inc_dishes_cooked(ctx.author.id, dish, amount*quantity)
+        await update_l(ctx.author.id, amount*(random.randint(1, 3)))
+
+        await msg.edit(f"`{amount*quantity}`x **{dish}** has been prepared!")
+
+        with contextlib.suppress(Exception):
+            return await ctx.author.send(f"`{amount*quantity}`x **{dish}** has been prepared!")
 
         return await ctx.respond("No such dish... Look up some dishes via `/menu`!")
 
