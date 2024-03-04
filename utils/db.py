@@ -56,6 +56,7 @@ def get_user_data(id):
 
 async def update_l(id:int, exp:int):
     """Update a user's level"""
+    # TODO: fix this.
     collection.update_one({"_id": id}, {"$inc": {"exp": exp}})
 
     udata = get_user_data(id)

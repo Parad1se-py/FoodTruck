@@ -103,70 +103,67 @@ class Lootbox(commands.Cog):
         await ctx.defer()
 
         if not check_acc(ctx.author.id):
-            return await ctx.respond("You don't have a FoodTruck account yet! To get started, use `/daily`!")
+            return await ctx.respond("You don't have a FoodTruck account yet! To get started, use `/start` or `/daily`!")
         
-        for key, value in lootboxes.items():
-            if name.lower() == key.lower():
-                if not check_for_lootbox(ctx.author.id, key):
-                    return await ctx.respond("You don't own that lootbox! Use `/inventory` to view lootboxes owned by you.")
-                count = lootbox_count(ctx.author.id, key)
-                if count < amount:
-                    return await ctx.respond(f"You only have `{count}` {key} lootbox(es).")
-                
-                initial_embed = discord.Embed(
-                    title=f'Opening {key} lootbox...',
-                    colour=discord.Colour.teal()
+        if not check_for_lootbox(ctx.author.id, name):
+            return await ctx.respond("You don't own that lootbox! Use `/inventory` to view lootboxes owned by you.\nView the lootbox shop using `/lootboxes`", ephemeral=True)
+        count = lootbox_count(ctx.author.id, name)
+        if count < amount:
+            return await ctx.respond(f"You only have `{count}` {name} lootbox(es).", ephemeral=True)
+        
+        initial_embed = discord.Embed(
+            title=f'Opening {name} lootbox...',
+            colour=discord.Colour.teal()
+        )
+
+        msg = await ctx.respond(embed=initial_embed)
+        await asyncio.sleep(1.5)
+        
+        remove_lootboxes(ctx.author.id, name, amount)
+        
+        final_embed = discord.Embed(
+            title=f'{ctx.author.name}\'s {name} lootbox rewards...',
+            description=f'You opened {name} lootbox and got:'
+        )
+
+        for reward in lootboxes[name][2]:
+            if reward == 'cash':
+                cash = calculate_cash(name)
+                update_data(ctx.author.id, 'cash', cash*amount)
+                final_embed.add_field(
+                    name='Cash:',
+                    value=f'`${cash}`',
                 )
-                
-                msg = await ctx.respond(embed=initial_embed)
-                await asyncio.sleep(1.5)
-
-                remove_lootboxes(ctx.author.id, key, amount)
-                
-                final_embed = discord.Embed(
-                    title=f'{ctx.author.name}\'s {key} lootbox rewards...',
-                    description=f'You opened {key} lootbox and got:'
+            elif reward == 'level':
+                lvl = calculate_level(name)
+                await update_l(ctx.author.id, lvl*amount)
+                final_embed.add_field(
+                    name='Exp points:',
+                    value=f'`{lvl}`'
                 )
+            elif reward == 'ingredients':
+                ings = calculate_ingredients(name)
+                ings_list = []
+                for key, value in ings.items():
+                    add_item(ctx.author, key, value)
+                    ings_list.append(f'{key}: x{value}')
+                final_embed.add_field(
+                    name='Ingredients:',
+                    value=', '.join(ings_list)
+                )
+            elif reward == 'dish':
+                dishes = calculate_dish(name)
+                dishes_list = []
+                for key, value in dishes.items():
+                    add_dish(ctx.author, key, value)
+                    dishes_list.append(f'{key}: x{value}')
+                final_embed.add_field(
+                    name='Dishes:',
+                    value=', '.join(dishes_list)
+                    )
 
-                for reward in value[2]:
-                    if reward == 'cash':
-                        cash = calculate_cash(key)
-                        update_data(ctx.author.id, 'cash', cash*amount)
-                        final_embed.add_field(
-                            name='Cash:',
-                            value=f'`${cash}`',
-                        )
-                    elif reward == 'level':
-                        lvl = calculate_level(key)
-                        await update_l(ctx.author.id, lvl*amount)
-                        final_embed.add_field(
-                            name='Exp points:',
-                            value=f'`{lvl}`'
-                        )
-                    elif reward == 'ingredients':
-                        ings = calculate_ingredients(key)
-                        ings_list = []
-                        for key, value in ings.items():
-                            add_item(ctx.author, key, value)
-                            ings_list.append(f'{key}: x{value}')
-                        final_embed.add_field(
-                            name='Ingredients:',
-                            value=', '.join(ings_list)
-                        )
-                    elif reward == 'dish':
-                        dishes = calculate_dish(key)
-                        dishes_list = []
-                        for key, value in dishes.items():
-                            add_dish(ctx.author, key, value)
-                            dishes_list.append(f'{key}: x{value}')
-                        final_embed.add_field(
-                            name='Dishes:',
-                            value=', '.join(dishes_list)
-                        )
-                        
-                return await msg.edit(embed=final_embed)
+        return await msg.edit(embed=final_embed)
 
-        return await ctx.respond("No such lootbox! Use `/lootboxes` to get a list of all lootboxes.\nUse `/inventory` to view your owned lootboxes!")
     
     @commands.cooldown(1, 3, commands.BucketType.user)
     @lootbox_slash_group.command(
@@ -178,30 +175,31 @@ class Lootbox(commands.Cog):
                           ctx: discord.ApplicationContext,
                           name: Option(str, description='Pick a lootbox to buy.', autocomplete=lootbox_searcher),
                           amount: Option(int, required=False)=1):
-
         await ctx.defer()
+
         if not check_acc(ctx.author.id):
             return await ctx.respond("You don't have a FoodTruck account yet! To get started, use `/daily`!")
-        
-        for key, value in lootboxes.items():
-            if name.lower() == key.lower():
-                user_cash = get_user_data(ctx.author.id)['cash']
-                
-                if value[1]*amount > user_cash:
-                    return await ctx.respond(f"You don't have enough cash (`${value[1]*amount}`) to buy this lootbox")
- 
-                update_data(ctx.author.id, 'cash', -(value[1]*amount))
-                add_lootbox(ctx.author.id, key, amount)
-                
-                return await ctx.respond(
-                    embed = discord.Embed(
-                        title="Successful purchase!",
-                        description=f"You successfully bought `{amount}x` **{key}** lootbox for `${value[1]*amount}`!",
-                        colour=discord.Colour.teal()
-                    )
-                )
 
-        return await ctx.respond("No such lootbox! Use `/lootboxes` to get a list of all lootboxes.\nUse `/inventory` to view your owned lootboxes!")
+        if name not in lootboxes.keys():
+            return await ctx.respond("No such lootbox! Use `/lootboxes` to get a list of all lootboxes.\nUse `/inventory` to view your owned lootboxes!")
+
+        user_cash = get_user_data(ctx.author.id)['cash']
+        price = lootboxes[name][1]*amount
+
+        if price > user_cash:
+            return await ctx.respond(f"You don't have enough cash (`${price}`) to buy this lootbox", ephemeral=True)
+
+        update_data(ctx.author.id, 'cash', -(price))
+        add_lootbox(ctx.author.id, name, amount)
+
+        return await ctx.respond(
+            embed = discord.Embed(
+                title="Successful purchase!",
+                description=f"You successfully bought `{amount}x` **{name}** lootbox for `${price}`!",
+                colour=discord.Colour.teal()
+            )
+        )
+
 
 def setup(bot:commands.Bot):
     bot.add_cog(Lootbox(bot))

@@ -47,14 +47,16 @@ def calculate_ingredients(lootbox) -> dict:
 
     elif lootbox.lower() == 'gold':
         ings = ['cheese', 'veg-salad', 'sauce', 'taco-shell', 'long-bun']
-        final = {random.choice(ings): random.randint(2, 5) for _ in range(2)}
-        return final
-
+        return {
+            random.choice(ings): random.randint(2, 5)
+            for _ in range(2)
+        }
     elif lootbox.lower() == 'mega':
         ings = ['cheese', 'veg-salad', 'sauce', 'taco-shell', 'long-bun', 'rice-fillings', 'long-bun', 'tortilla']
-        final = {random.choice(ings): random.randint(2, 5) for _ in range(random.randint(3, 5))}
-
-        return final
+        return {
+            random.choice(ings): random.randint(2, 5)
+            for _ in range(random.randint(3, 5))
+        }
     
 def calculate_dish(lootbox) -> dict:
     if lootbox.lower() == 'normal':
@@ -62,12 +64,14 @@ def calculate_dish(lootbox) -> dict:
 
     elif lootbox.lower() == 'gold':
         dishes = ['taco', 'hot-dog', 'quesadilla']
-        final = {random.choice(dishes): random.randint() for _ in range(2)}
-
-        return final
+        return {
+            random.choice(dishes): random.randint()
+            for _ in range(2)
+        }
 
     elif lootbox.lower() == 'mega':
         dishes = ['taco', 'hot-dog', 'quesadilla', 'burrito']
-        final = {random.choice(dishes): random.randint() for _ in range(3)}
-
-        return final
+        return {
+            random.choice(dishes): random.randint()
+            for _ in range(3)
+        }

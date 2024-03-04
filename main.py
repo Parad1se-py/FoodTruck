@@ -74,4 +74,10 @@ async def on_ready():
 	await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name = "Preparing dishes!"))
 
 # Run the bot
-bot.run(os.getenv("TOKEN"))
+mode = input("mode: run or test\n>>> ")
+if mode == 'run':
+    bot.run(os.getenv("TOKEN"))
+elif mode == 'test':
+    bot.run(os.getenv("TEST_TOKEN"))
+else:
+    print("invalid mode")

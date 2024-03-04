@@ -34,5 +34,7 @@ class BotRestart(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
 
+    # TODO: make all cooking dishes ready after bot starts
+
 def setup(bot:commands.Bot):
     bot.add_cog(BotRestart(bot))
