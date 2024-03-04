@@ -54,6 +54,23 @@ class Help(commands.Cog):
         )
         await paginator.respond(ctx.interaction, ephemeral=False)
 
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.slash_command(
+        name='support',
+        description='Team Frixion support server, reach out here for any inquiries.',
+        usage='/support'
+    )
+    async def support(self, ctx:discord.ApplicationContext):
+        await ctx.defer()
+
+        embed = discord.Embed(
+            title="Team Frixion Support Server!",
+            description="Join here if you have any questions, complaints or suggestions! We are open to all!\nhttps://discord.gg/VJCyJqge3V",
+            colour=discord.Colour.teal()
+        )
+
+        await ctx.respond(embed=embed, ephemeral=True)
+
 
 def setup(bot:commands.Bot):
     bot.add_cog(Help(bot))
