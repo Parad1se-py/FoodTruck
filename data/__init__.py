@@ -23,5 +23,4 @@ from .badges_list import *
 from .ing_shop_list import *
 from .menu_list import *
 from .lootbox_list import *
-from .stocks_list import *
 from .worker_list import *
