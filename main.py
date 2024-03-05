@@ -32,7 +32,8 @@ with open("configuration.json", "r") as config:
 	owner_id = data["owner_id"]
 
 # Intents
-intents = discord.Intents.all()
+intents = discord.Intents.none()
+intents.members = True
 # The bot
 bot = discord.Bot(intents = intents, owner_id = owner_id)
 
