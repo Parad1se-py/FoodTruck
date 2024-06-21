@@ -19,11 +19,45 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .db import *
-from .time_conv import *
-from .inventory import *
-from .lootbox_calc import *
-from .help_pages import *
-from .shop_pages import *
-from .menu_pages import *
-from .market_pages import *
+import discord
+from discord.ext import commands
+from discord.utils import get
+
+from utils import *
+
+
+class MsgAll(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print(f"{self.__class__.__name__} Cog has been loaded")
+        
+    @commands.slash_command(
+        name='msgall',
+        description='Send a message to all users via dms | DEV ONLY',
+        guild_ids=[765869842451398667]
+    )
+    async def msgall(self, ctx: discord.ApplicationContext, message):
+        await ctx.defer()
+
+        if ctx.author.id != 718712985371148309:
+            return
+
+        total = 0
+        succ = 0
+        for i in get_all_data():
+            try:
+                member = await self.bot.fetch_user(i['_id'])
+                await member.send(message)
+                succ += 1
+            except Exception:
+                continue
+            total += 1
+
+        await ctx.respond(f"Successfully messaged {succ}/{total} users.")
+
+
+def setup(bot:commands.Bot):
+    bot.add_cog(MsgAll(bot))

@@ -19,12 +19,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import asyncio
+
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.commands import Option
 
 from utils import *
 from data import *
+
 
 class BotRestart(commands.Cog):
     def __init__(self, bot):
@@ -33,8 +36,19 @@ class BotRestart(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
+        
+        await asyncio.sleep(2.5)
 
-    # TODO: make all cooking dishes ready after bot starts
+        # loop through full db to check for all users' "cooking" items
+        for i in get_all_data():
+            try:
+                for x, y in i['active']:
+                    # remove "active" items and add items to "ready"
+                    remove_active(i['_id'], x, y)
+                    add_dish(i['_id'], x, y)
+            except Exception as e:
+                continue
+        print("## [Successfully cooked all items in waitlist]")
 
 def setup(bot:commands.Bot):
     bot.add_cog(BotRestart(bot))

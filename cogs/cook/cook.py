@@ -57,6 +57,9 @@ class Cook(commands.Cog):
         await ctx.defer()
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
+        
+        if amount > 10: # to push users to use worker bots and reduce loopholes in the game's eco :/
+            return await ctx.respond("You can't manually cook more than a quantity of 10!\nGet worker bots to become efficient.\nUse `/workers`!", ephemeral=True)
 
         user_data = get_user_data(ctx.author.id)
         dish_menu_data = menu[dish]
@@ -80,11 +83,11 @@ class Cook(commands.Cog):
 
         add_active(ctx.author, dish, amount*quantity)
         msg = await ctx.respond(f"Your dish is being prepared! Come back {convert_to_unix_time(datetime.datetime.now(), seconds=dish_menu_data[5])}.")
-        await asyncio.sleep(dish_menu_data[5])
+        await asyncio.sleep(dish_menu_data[5]*amount)
         remove_active(ctx.author.id, dish, amount*quantity)
         add_dish(ctx.author, dish, amount*quantity)
         inc_dishes_cooked(ctx.author.id, dish, amount*quantity)
-        await update_l(ctx.author.id, amount*(random.randint(1, 3)))
+        await update_l(ctx.author.id, amount+(amount/10)) # give 10% increase for manual
 
         await msg.edit(f"`{amount*quantity}`x **{dish}** has been prepared!")
 

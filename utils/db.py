@@ -33,7 +33,7 @@ collection = db["foodtruck"]
 
 def register(user_id:int):
     """Register a user."""
-    post = {"_id": user_id, "cash": 500, "streak": [0, 0], "name": None, "active":{}, "dishes":{}, "level": 1, "level_l": 0, "exp": 10, "dishes_cooked":{}, "badges":["foodtruck-start-badge"], "lootboxes": {}, "workers": {}, "inv": {}}
+    post = {"_id": user_id, "cash": 500, "streak": [0, 0], "name": None, "active":{}, "dishes":{}, "level": 1, "exp": 10, "dishes_cooked":{}, "badges":["foodtruck-start-badge"], "lootboxes": {}, "workers": {}, "inv": {}}
     collection.insert_one(post)
     return True
 
@@ -57,17 +57,33 @@ def get_user_data(id):
 async def update_l(id:int, exp:int):
     """Update a user's level"""
     # TODO: fix this.
-    collection.update_one({"_id": id}, {"$inc": {"exp": exp}})
+    # exp is refreshed after reaching a new level.
 
+    # get user's current level and exp
     udata = get_user_data(id)
-    exp = int(udata["exp"])
-    lvl = int(udata["level"])
+    user_exp = int(udata["exp"])
+    user_lvl = int(udata["level"])
 
-    while exp >= lvl*10:
-        exp -= lvl*10
-        lvl += 1
+    exp_new = user_exp + exp
 
-    collection.update_one({"_id": id}, {"$inc": {"level": lvl-udata["level"], "level_l": exp}})
+    # exp max for nth level = 10*n
+    # Example, max exp for Level 1 -> 10xp; Level 2 -> 20xp
+
+    # while exp >= lvl*10:
+    #     exp -= lvl*10
+    #     lvl += 1
+
+    if exp_new < user_lvl*10:
+        collection.update_one({"_id": id}, {"$inc": {"exp": exp_new}})
+    if exp_new == user_lvl*10:
+        collection.update_many({"_id": id}, {"$inc": {"level": 1}}, {"$set": {"exp": 0}})
+    if exp_new > user_lvl*10:
+        while exp_new >= user_lvl*10:
+            exp_new -= user_lvl*10
+            user_lvl += 1
+        collection.update_many({"_id": id}, {"$set": {"level": user_lvl}}, {"$set": {"exp": exp}})
+
+    # collection.update_one({"_id": id}, {"$inc": {"level": lvl-udata["level"], "level_l": exp}})
 
 def add_item(user, item, amount=1):
     collection.update_one(

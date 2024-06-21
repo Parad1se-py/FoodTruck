@@ -38,6 +38,7 @@ class Workers(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded")
 
+
     workers_slash_group = discord.SlashCommandGroup(name='worker', description='All commands related to FoodTruck Worker Bots!')
 
     @workers_slash_group.command(
@@ -122,13 +123,16 @@ class Workers(commands.Cog):
     )
     async def worker_start(self,
                            ctx: discord.ApplicationContext,
-                           name: Option(str, required=True, autocomplete=worker_searcher),
-                           amount: Option(int, required=False)=1
+                           recipe: Option(str, required=True, autocomplete=worker_searcher),
+                           amount: Option(int, required=False)=10
                            ):
         await ctx.defer()
 
         if not check_acc(ctx.author.id):
             return await ctx.respond("This user doesn't have a profile as they haven't played yet!")
+        
+        if amount < 10:
+            return await ctx.respond("You cannot enter an amount lesser than 11!\nTo cook a recipe for an amount less than 11, use `/cook`.")
 
 
 def setup(bot:commands.Bot):
