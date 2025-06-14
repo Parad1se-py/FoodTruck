@@ -19,8 +19,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import asyncio
+
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.commands import Option
 
 from utils import *
@@ -30,9 +32,14 @@ class Workers(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.loaded_worker_list = [x for x, y in workers.items()]
+        self.loaded_menu_list = [x for x, y in menu.items()]
 
     async def worker_searcher(self, ctx: discord.AutocompleteContext):
         return [item for item in self.loaded_worker_list if item.startswith(ctx.value.lower()) or item.lower() == ctx.value.lower()]
+    
+    async def dish_searcher(self, ctx: discord.AutocompleteContext):
+        return [item for item in self.loaded_menu_list if item.lower().startswith(ctx.value.lower()) or item.lower() == ctx.value.lower()]
+
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -123,9 +130,11 @@ class Workers(commands.Cog):
     )
     async def worker_start(self,
                            ctx: discord.ApplicationContext,
-                           recipe: Option(str, required=True, autocomplete=worker_searcher),
+                           worker_bot: Option(str, required=True, autocomplete=worker_searcher),
+                           recipe: Option(str, required=True, autocomplete=dish_searcher),
                            amount: Option(int, required=False)=10
                            ):
+        # TODO: Check if amount is within worker limit and ask for the worker they wanna use :sob:
         await ctx.defer()
 
         if not check_acc(ctx.author.id):
@@ -134,6 +143,37 @@ class Workers(commands.Cog):
         if amount < 10:
             return await ctx.respond("You cannot enter an amount lesser than 11!\nTo cook a recipe for an amount less than 11, use `/cook`.")
 
+        if recipe not in menu:
+            return await ctx.respond(f"The recipe `{recipe}` does not exist.\nCheck existing recipes using `/menu`!")
+        
+        user_id = ctx.author.id
+        user_inventory = get_user_data(user_id)['inv']
+
+        required_ingredients = menu[recipe][1]
+        cooking_time = menu[recipe][5]
+        quantity = menu[recipe][2]*amount
+
+        # check if user has all required ingredients
+        for ingredient in required_ingredients:
+            if not check_for_item(ctx.author.id, ingredient):
+                return await ctx.respond(f"You lack the ingredient `{ingredient}`! Buy it using `/buy {ingredient}`.")
+            count = user_inventory[ingredient]
+            if count < amount:
+                return await ctx.respond(f"You lack {amount}x `{ingredient}`! You currently have `{count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-count}`.")
+            
+        # check if amount of food being cooked is above limit of the worker bot
+        if quantity > workers[worker_bot][3]:
+            return await ctx.respond(f"You cannot cook {amount}x `{recipe}` since it exceeds the limit of your worker bot ({workers[worker_bot][3]}x)\nEnter a lower amount, or ugprade to a better worker bot!\nNote: amount is calculated on the basis of recipe quantity and your input amount")
+        
+        # remove all ingredients from user's inventory
+        for ingredient in required_ingredients:
+            remove_item(ctx.author.id, ingredient, amount)
+
+        add_active(ctx.author, recipe, quantity)
+        i = 0
+        while i <= quantity:
+            await asyncio.sleep(workers[worker_bot][4])
+            i += workers[worker_bot][5]
 
 def setup(bot:commands.Bot):
     bot.add_cog(Workers(bot))

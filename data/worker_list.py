@@ -19,8 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Worker: [id, price, level]
+# Worker: [id, price, level, limit, speed (seconds), handles (qty produced at once)]
 workers = {
-    'Cookmaxxer 3000 v1': ['cookmaxxer-3000-v1', 20000, 12],
-    'Cookmaxxer 3000 v2': ['cookmaxxer-3000-v2', 60000, 20]
+    'Cookmaxxer 3000 v1': ['cookmaxxer-3000-v1', 20000, 12, 30, 1.2, 2],
+    'Cookmaxxer 3000 v2': ['cookmaxxer-3000-v2', 60000, 20, 70, 1, 3]
 }

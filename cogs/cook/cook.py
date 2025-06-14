@@ -74,6 +74,7 @@ class Cook(commands.Cog):
             if count < amount:
                 return await ctx.respond(f"You lack {amount}x `{ingredient}`! You currently have `{count}` {ingredient}. Buy the required amount using `/buy {ingredient} {amount-count}`.")
 
+        for ingredient in dish_menu_data[1]:
             remove_item(ctx.author.id, ingredient, amount)
 
         if not bool(user_data['dishes_cooked']):

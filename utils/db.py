@@ -32,8 +32,23 @@ db = cluster["discord"]
 collection = db["foodtruck"]
 
 def register(user_id:int):
-    """Register a user."""
-    post = {"_id": user_id, "cash": 500, "streak": [0, 0], "name": None, "active":{}, "dishes":{}, "level": 1, "exp": 10, "dishes_cooked":{}, "badges":["foodtruck-start-badge"], "lootboxes": {}, "workers": {}, "inv": {}}
+    """Register a user into the database."""
+    post = {
+        "_id": user_id,
+        "cash": 500,
+        "streak": [0, 0],
+        "name": None,
+        "active":{},
+        "dishes":{},
+        "level": 1,
+        "exp": 10,
+        "dishes_cooked":{},
+        "badges":["foodtruck-start-badge"],
+        "inv": {},
+        "lootboxes": {},
+        "workers": {},
+        "worker_loops": {}
+    }
     collection.insert_one(post)
     return True
 
@@ -86,18 +101,21 @@ async def update_l(id:int, exp:int):
     # collection.update_one({"_id": id}, {"$inc": {"level": lvl-udata["level"], "level_l": exp}})
 
 def add_item(user, item, amount=1):
+    """Add an ingredient to any user's inventory."""
     collection.update_one(
         {"_id": user.id},
         {"$inc": {f"inv.{item}": int(amount)}}
     )
 
 def purge_item(id, item, amount):
+    """Completely remove an ingredient from any user's inventory."""
     collection.update_one(
         {"_id": id},
         {"$unset": {f"inv.{item}": amount}}
     )
 
 def remove_item(id, item:str, amount:int=1):
+    """Remove a particular amount of an ingredient from a user's inventory."""
     if item_count(id, item) == amount:
         purge_item(id, item, amount)
     else:
